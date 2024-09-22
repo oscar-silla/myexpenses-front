@@ -1,9 +1,16 @@
-@for (expense of expenses; track expense.id) {
-<div>
-  <span>{{ expense.description }}</span>
-</div>
-} @empty {
-<div>
-  <span>There are no items.</span>
-</div>
-}
+<mat-list role="list">
+  @for (expense of expenses; track expense.id) {
+  <div>
+    <mat-list-item role="listitem">
+      <div class="flex">
+        <span class="black">{{ expense.description }}</span>
+        <span class="black">{{ expense.amount }}€</span>
+      </div>
+    </mat-list-item>
+  </div>
+  } @empty {
+  <div>
+    <mat-list-item>There are no items.</mat-list-item>
+  </div>
+  }
+</mat-list>

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Expense } from '../interfaces/expense.interface';
 import { ExpensesService } from '../services/expenses.service';
 import { Pagination } from '../interfaces/pagination.interface';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-expenses-list',
   standalone: true,
-  imports: [],
+  imports: [MatListModule],
   templateUrl: './expenses-list.component.html',
   styleUrl: './expenses-list.component.css',
 })
