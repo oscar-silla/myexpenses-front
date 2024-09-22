@@ -1,0 +1,9 @@
+@for (expense of expenses; track expense.id) {
+<div>
+  <span>{{ expense.description }}</span>
+</div>
+} @empty {
+<div>
+  <span>There are no items.</span>
+</div>
+}
