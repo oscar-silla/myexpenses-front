@@ -1,0 +1,8 @@
+.flex {
+    display: flex;
+}
+
+app-fab-button {
+    margin-left: auto;
+    padding: 4% 4% 0% 0%;
+}

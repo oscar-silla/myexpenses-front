@@ -1,26 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Expense } from '../interfaces/expense.interface';
-import { ExpensesService } from '../services/expenses.service';
-import { Pagination } from '../interfaces/pagination.interface';
+import { ExpensesService } from '../../services/expenses.service';
 import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { ExpenseDate } from '../../types/models/response/expense-date/expense-date.type';
+import { ExpenseDateResponse } from '../../types/models/response/expense-date/expense-date-response.type';
 
 @Component({
   selector: 'app-expenses-list',
   standalone: true,
-  imports: [MatListModule],
+  imports: [MatListModule, MatDividerModule],
   templateUrl: './expenses-list.component.html',
   styleUrl: './expenses-list.component.css',
 })
 export class ExpensesListComponent implements OnInit {
   title = 'Expenses list';
-  expenses: Expense[] = [];
+  expenseDates: ExpenseDate[] = [];
 
   constructor(private expensesService: ExpensesService) {}
 
   ngOnInit(): void {
     this.expensesService.getExpenses().subscribe({
-      next: (expenses: { results: [Expense]; pagination: Pagination }) => {
-        this.expenses = expenses.results;
+      next: (response: ExpenseDateResponse) => {
+        this.expenseDates = response.results;
       },
       error(err) {
         console.log('Error fetching expenses', err);
