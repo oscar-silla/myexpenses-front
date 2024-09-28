@@ -1,7 +1,7 @@
-.black {
-    color: black;
-}
 .flex {
     display: flex;
     justify-content: space-around;
+}
+.divider-color {
+    border-top-color: #f0b90b;
 }
