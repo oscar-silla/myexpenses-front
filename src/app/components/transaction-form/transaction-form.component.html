@@ -1,8 +1,32 @@
-<form>
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <mat-chip-listbox
+    class="mat-mdc-chip-set-stacked"
+    aria-label="Cutest dog breeds"
+    formControlName="category"
+  >
+    @for (category of categories; track category) {
+    <mat-chip-option>{{ category }}</mat-chip-option>
+    }
+  </mat-chip-listbox>
+  <div class="right">
+    <button mat-button>Show more</button>
+  </div>
+
   <mat-form-field appearance="fill">
-    <mat-label>Fill form field</mat-label>
-    <input matInput placeholder="Placeholder" />
-    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-    <mat-hint>Hint</mat-hint>
+    <mat-label>Amount</mat-label>
+    <input matInput type="number" formControlName="amount" />
+    <mat-icon matSuffix>paid</mat-icon>
   </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Description</mat-label>
+    <input matInput type="text" formControlName="description" />
+    <mat-icon matSuffix>description</mat-icon>
+  </mat-form-field>
+
+  <div class="flex">
+    <button mat-button type="submit" [disabled]="!profileForm.valid">
+      Create
+    </button>
+  </div>
 </form>
