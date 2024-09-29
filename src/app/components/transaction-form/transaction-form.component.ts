@@ -5,6 +5,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ExpenseService } from '../../services/expense.service';
+import { ExpenseRequest } from '../../types/models/request/expense/expense-request.type';
+
+type FormFields = {
+  category: string;
+  amount: number;
+  description: string;
+};
+
 @Component({
   selector: 'app-transaction-form',
   standalone: true,
@@ -29,12 +38,34 @@ export class TransactionFormComponent {
   ];
 
   profileForm = new FormGroup({
-    category: new FormControl(''),
-    amount: new FormControl(''),
-    description: new FormControl(''),
+    category: new FormControl<string>(''),
+    amount: new FormControl<number>(0),
+    description: new FormControl<string>(''),
   });
 
+  constructor(private expenseService: ExpenseService) {}
+
   onSubmit() {
-    console.log(this.profileForm.value);
+    const expenseResquest = this.mapToExpenseRequest(
+      this.profileForm.value as FormFields
+    );
+    this.expenseService.save(expenseResquest).subscribe({
+      next: () => {
+        console.log('Saving expense...');
+      },
+      error: (err) => {
+        console.log('Error saving expense', err);
+      },
+      complete: () => {
+        console.log('Expense saved successfully');
+      },
+    });
+  }
+
+  private mapToExpenseRequest(formValues: FormFields): ExpenseRequest {
+    return {
+      ...formValues,
+      date: new Date(),
+    };
   }
 }

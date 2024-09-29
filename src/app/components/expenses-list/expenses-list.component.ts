@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ExpensesService } from '../../services/expenses.service';
+import { ExpenseService } from '../../services/expense.service';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { ExpenseDate } from '../../types/models/response/expense-date/expense-date.type';
@@ -16,7 +16,7 @@ export class ExpensesListComponent implements OnInit {
   title = 'Expenses list';
   expenseDates: ExpenseDate[] = [];
 
-  constructor(private expensesService: ExpensesService) {}
+  constructor(private expensesService: ExpenseService) {}
 
   ngOnInit(): void {
     this.expensesService.getExpenses().subscribe({
