@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ExpenseService } from '../../services/expense.service';
 import { ExpenseRequest } from '../../types/models/request/expense/expense-request.type';
+import { Router } from '@angular/router';
 
 type FormFields = {
   category: string;
@@ -43,7 +44,7 @@ export class TransactionFormComponent {
     description: new FormControl<string>(''),
   });
 
-  constructor(private expenseService: ExpenseService) {}
+  constructor(private expenseService: ExpenseService, private router: Router) {}
 
   onSubmit() {
     const expenseResquest = this.mapToExpenseRequest(
@@ -51,13 +52,10 @@ export class TransactionFormComponent {
     );
     this.expenseService.save(expenseResquest).subscribe({
       next: () => {
-        console.log('Saving expense...');
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         console.log('Error saving expense', err);
-      },
-      complete: () => {
-        console.log('Expense saved successfully');
       },
     });
   }
