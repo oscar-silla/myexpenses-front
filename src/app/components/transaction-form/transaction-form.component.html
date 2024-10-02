@@ -3,6 +3,7 @@
     class="mat-mdc-chip-set-stacked"
     aria-label="Cutest dog breeds"
     formControlName="category"
+    required
   >
     @for (category of categories; track category) {
     <mat-chip-option>{{ category }}</mat-chip-option>
@@ -14,13 +15,13 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Amount</mat-label>
-    <input matInput type="number" formControlName="amount" />
+    <input required matInput type="number" formControlName="amount" />
     <mat-icon matSuffix>paid</mat-icon>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Description</mat-label>
-    <input matInput type="text" formControlName="description" />
+    <input required matInput type="text" formControlName="description" />
     <mat-icon matSuffix>description</mat-icon>
   </mat-form-field>
 
