@@ -5,3 +5,16 @@
 .divider-color {
     border-top-color: #00dddd;
 }
+.list {
+    margin-top: 5%;
+    width: 22rem;
+    background-color: #348787;
+    border-radius: 8px;
+    flex-grow: 1;
+    border: 3px solid #ffdcc7;
+    overflow: auto;
+}
+
+mat-list {
+    
+}
