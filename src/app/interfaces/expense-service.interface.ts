@@ -8,4 +8,5 @@ export interface ExpenseServicePort {
   getExpenses(): Observable<ExpenseDateResponse>;
   save(expense: ExpenseRequest): Observable<Object>;
   modify(id: string, expense: ExpenseRequest): Observable<Object>;
+  delete(id: string): Observable<Object>;
 }

@@ -6,7 +6,7 @@ mat-chip-listbox {
     padding: 1%
 }
 
-.flex {
+.center {
     display: flex;
     justify-content: center;
 }
@@ -17,4 +17,8 @@ mat-chip-listbox {
 
 .right button {
     margin-left: auto;
+}
+
+.red {
+    color: rgba(255, 0, 0, 0.689);
 }

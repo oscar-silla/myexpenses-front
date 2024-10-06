@@ -1,5 +1,6 @@
 import {
   Component,
+  inject,
   Input,
   OnChanges,
   OnInit,
@@ -16,6 +17,14 @@ import { ExpenseRequest } from '../../types/models/request/expense/expense-reque
 import { Router } from '@angular/router';
 import { ExpenseResponse } from '../../types/models/response/expense/expense-response.type';
 import { CommonModule } from '@angular/common';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { DialogComponent } from '../shared/dialog/dialog.component';
 
 type FormFields = {
   category: string;
@@ -34,13 +43,33 @@ type FormFields = {
     MatChipsModule,
     CommonModule,
     ReactiveFormsModule,
+    DialogComponent,
   ],
   templateUrl: './transaction-form.component.html',
   styleUrl: './transaction-form.component.css',
 })
-export class TransactionFormComponent implements OnChanges, OnInit {
+export class TransactionFormComponent implements OnChanges {
   @Input() expense?: ExpenseResponse;
   @Input() operationType?: string;
+  readonly dialog = inject(MatDialog);
+
+  constructor(private expenseService: ExpenseService, private router: Router) {}
+
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogComponent);
+    dialogRef.afterClosed().subscribe((isDelete: boolean) => {
+      if (isDelete) {
+        this.expenseService.delete(this.expense!.id.toString()).subscribe({
+          next: () => {
+            this.router.navigate(['/home']);
+          },
+          error: (err) => {
+            console.log('Error deleting expense', err);
+          },
+        });
+      }
+    });
+  }
 
   readonly categories: string[] = [
     'Food',
@@ -55,11 +84,6 @@ export class TransactionFormComponent implements OnChanges, OnInit {
     amount: new FormControl<number>(0),
     description: new FormControl<string>(''),
   });
-
-  constructor(private expenseService: ExpenseService, private router: Router) {}
-  ngOnInit(): void {
-    console.log(this.operationType);
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['expense'] && changes['expense'].currentValue) {
