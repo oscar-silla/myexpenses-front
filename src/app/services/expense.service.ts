@@ -28,4 +28,8 @@ export class ExpenseService implements ExpenseServicePort {
   modify(id: string, expense: ExpenseRequest): Observable<Object> {
     return this.http.patch<Object>(`${this.baseUrl}/expenses/${id}`, expense);
   }
+
+  delete(id: string): Observable<Object> {
+    return this.http.delete<ExpenseResponse>(`${this.baseUrl}/expenses/${id}`);
+  }
 }
