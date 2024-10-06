@@ -5,6 +5,7 @@ import { TransactionsComponent } from './pages/transactions/transactions.compone
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'transactions', component: TransactionsComponent },
+  { path: 'transactions/:id', component: TransactionsComponent },
   { path: '', component: HomeComponent },
   { path: '**', component: HomeComponent },
 ];

@@ -4,7 +4,11 @@
     <mat-list-item class="date-item">{{ expenseDate.date }}</mat-list-item>
     @for (expense of expenseDate.expenses; track expense.id) {
     <div class="expense-item">
-      <mat-list-item role="listitem" class="expense-list-item">
+      <mat-list-item
+        role="listitem"
+        class="expense-list-item"
+        routerLink="/transactions/{{ expense.id }}"
+      >
         <div class="flex expense-details">
           <span class="expense-description">{{ expense.description }}</span>
           <span class="expense-amount">{{ expense.amount }}€</span>
