@@ -1,20 +1,25 @@
-<mat-list role="list">
+<mat-list class="expense-list" role="list">
   @for (expenseDate of expenseDates; track expenseDate.date) {
-  <div>
-    <mat-list-item>{{ expenseDate.date }}</mat-list-item>
+  <div class="expense-date">
+    <mat-list-item class="date-item">{{ expenseDate.date }}</mat-list-item>
     @for (expense of expenseDate.expenses; track expense.id) {
-    <mat-list-item role="listitem">
-      <div class="flex">
-        <span>{{ expense.description }}</span>
-        <span>{{ expense.amount }}€</span>
-      </div>
-    </mat-list-item>
-    <mat-divider class="divider-color"></mat-divider>
+    <div class="expense-item">
+      <mat-list-item
+        role="listitem"
+        class="expense-list-item"
+        routerLink="/transactions/{{ expense.id }}"
+      >
+        <div class="flex expense-details">
+          <span class="expense-description">{{ expense.description }}</span>
+          <span class="expense-amount">{{ expense.amount }}€</span>
+        </div>
+      </mat-list-item>
+    </div>
     }
   </div>
   } @empty {
-  <div>
-    <mat-list-item>There are no items.</mat-list-item>
+  <div class="empty-message">
+    <mat-list-item>No hay elementos.</mat-list-item>
   </div>
   }
 </mat-list>

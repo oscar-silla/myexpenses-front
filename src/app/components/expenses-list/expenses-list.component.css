@@ -1,7 +1,72 @@
-.flex {
-    display: flex;
-    justify-content: space-around;
+.expense-list {
+  background-color: #2C2C34;
+  border-radius: 12px;
+  padding-right: 16px;
+  padding-left: 16px;
+  margin: 20px;
+  color: #FFFFFF;
+  max-height: 800px;
+  overflow-y: auto;
 }
-.divider-color {
-    border-top-color: #00dddd;
+.expense-date {
+  background-color: #353A44;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #b0c4de;
+  padding-bottom: 10px;
+}
+.date-item {
+  font-size: 16px;
+  font-weight: bold;
+  color: #A7BCD6;
+  padding-bottom: 8px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #353A44;
+  padding: 10px;
+  border-radius: 10px;
+}
+.expense-item {
+  background-color: #3E4756;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+.expense-list-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  color: #EAEAEA;
+}
+.expense-description {
+  font-size: 14px;
+  font-weight: 500;
+  color: #EAEAEA;
+}
+.expense-amount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #FFD700;
+}
+.empty-message {
+  text-align: center;
+  color: #FF6F61;
+  font-size: 14px;
+  margin-top: 20px;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.mdc-list {
+  padding: 0px;
 }

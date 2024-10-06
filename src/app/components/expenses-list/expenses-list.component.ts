@@ -4,11 +4,18 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { ExpenseDate } from '../../types/models/response/expense-date/expense-date.type';
 import { ExpenseDateResponse } from '../../types/models/response/expense-date/expense-date-response.type';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-expenses-list',
   standalone: true,
-  imports: [MatListModule, MatDividerModule],
+  imports: [
+    MatListModule,
+    MatDividerModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+  ],
   templateUrl: './expenses-list.component.html',
   styleUrl: './expenses-list.component.css',
 })
