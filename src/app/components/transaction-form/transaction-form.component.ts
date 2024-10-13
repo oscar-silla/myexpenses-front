@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ExpenseService } from '../../services/expense.service';
+import { TransactionService } from '../../services/transaction.service';
 import { ExpenseRequest } from '../../types/models/request/expense/expense-request.type';
 import { Router } from '@angular/router';
 import { ExpenseResponse } from '../../types/models/response/expense/expense-response.type';
@@ -53,7 +53,10 @@ export class TransactionFormComponent implements OnChanges {
   @Input() operationType?: string;
   readonly dialog = inject(MatDialog);
 
-  constructor(private expenseService: ExpenseService, private router: Router) {}
+  constructor(
+    private expenseService: TransactionService,
+    private router: Router
+  ) {}
 
   openDialog() {
     const dialogRef = this.dialog.open(DialogComponent);

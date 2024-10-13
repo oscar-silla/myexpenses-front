@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, output } from '@angular/core';
 import { TransactionFormComponent } from '../../components/transaction-form/transaction-form.component';
-import { ExpenseService } from '../../services/expense.service';
+import { TransactionService } from '../../services/transaction.service';
 import { ExpenseResponse } from '../../types/models/response/expense/expense-response.type';
 
 @Component({
@@ -15,7 +15,7 @@ export class TransactionsComponent implements OnInit {
   expense?: ExpenseResponse;
   operationType: string = '';
 
-  constructor(private expenseService: ExpenseService) {}
+  constructor(private expenseService: TransactionService) {}
 
   ngOnInit(): void {
     if (this.id) {
@@ -25,7 +25,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   private fetchAndSetExpense(id: string) {
-    this.expenseService.getExpense(id).subscribe({
+    this.expenseService.getTransaction(id).subscribe({
       next: (res: ExpenseResponse) => {
         this.expense = res;
       },

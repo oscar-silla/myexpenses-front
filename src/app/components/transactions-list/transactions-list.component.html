@@ -1,0 +1,43 @@
+<mat-list class="expense-list" role="list">
+  @for (transactionDate of transactionDates; track transactionDate.date) {
+  <div class="expense-date">
+    @if ((type === 'EXPENSE' && transactionDate.expenses.length > 0)
+    || (type === 'REVENUE' && transactionDate.revenues.length > 0))
+    {
+      <mat-list-item class="date-item">
+        {{ transactionDate.date }}
+      </mat-list-item>
+    } @else {
+      <div class="empty-message">
+        <mat-list-item>No hay elementos.</mat-list-item>
+      </div>
+    } @if (type === 'EXPENSE') {
+      @for (expense of transactionDate.expenses; track expense.id) {
+        <div class="expense-item">
+          <mat-list-item role="listitem" class="expense-list-item" routerLink="/transactions/{{ expense.id }}">
+            <div class="flex expense-details">
+              <span class="expense-description">{{ expense.description }}</span>
+              <span class="expense-amount">{{ expense.amount }}€</span>
+            </div>
+          </mat-list-item>
+        </div>
+      }
+    } @else {
+      @for (expense of transactionDate.revenues; track expense.id) {
+        <div class="expense-item">
+          <mat-list-item role="listitem" class="expense-list-item" routerLink="/transactions/{{ expense.id }}">
+            <div class="flex expense-details">
+              <span class="expense-description">{{ expense.description }}</span>
+              <span class="expense-amount">{{ expense.amount }}€</span>
+            </div>
+          </mat-list-item>
+        </div>
+      }
+    }
+  </div>
+  } @empty {
+  <div class="empty-message">
+    <mat-list-item>No hay elementos.</mat-list-item>
+  </div>
+  }
+</mat-list>
