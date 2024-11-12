@@ -14,16 +14,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TransactionService } from '../../services/transaction.service';
 import { ExpenseRequest } from '../../types/models/request/expense/expense-request.type';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ExpenseResponse } from '../../types/models/response/expense/expense-response.type';
 import { CommonModule } from '@angular/common';
-import {
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../shared/dialog/dialog.component';
 
 type FormFields = {
@@ -44,19 +39,31 @@ type FormFields = {
     CommonModule,
     ReactiveFormsModule,
     DialogComponent,
+    MatTabsModule,
   ],
   templateUrl: './transaction-form.component.html',
   styleUrl: './transaction-form.component.css',
 })
-export class TransactionFormComponent implements OnChanges {
+export class TransactionFormComponent implements OnInit, OnChanges {
   @Input() expense?: ExpenseResponse;
   @Input() operationType?: string;
+  transactionTypeIndex?: number;
+  transactionTypes: string[] = ['EXPENSE', 'REVENUE'];
   readonly dialog = inject(MatDialog);
 
   constructor(
     private expenseService: TransactionService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
+
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe((params: ParamMap) => {
+      params.get('type') === this.transactionTypes[0]
+        ? (this.transactionTypeIndex = 0)
+        : (this.transactionTypeIndex = 1);
+    });
+  }
 
   openDialog() {
     const dialogRef = this.dialog.open(DialogComponent);
@@ -86,12 +93,17 @@ export class TransactionFormComponent implements OnChanges {
     category: new FormControl<string>(''),
     amount: new FormControl<number>(0),
     description: new FormControl<string>(''),
+    type: new FormControl<string>(''),
   });
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['expense'] && changes['expense'].currentValue) {
       this.expense && this.setFormValues(this.expense);
     }
+  }
+
+  setTransactionType(event: MatTabChangeEvent) {
+    console.log(this.transactionTypes[event.index])
   }
 
   private setFormValues(expense: ExpenseResponse) {
