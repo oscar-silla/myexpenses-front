@@ -1,6 +1,13 @@
 <div>
-  <app-expenses-list></app-expenses-list>
+  <mat-tab-group animationDuration="0ms" (selectedTabChange)="setTransactionType($event)">
+    <mat-tab label="Expenses"
+      ><app-transactions-list [type]="transactionType"></app-transactions-list
+    ></mat-tab>
+    <mat-tab label="Revenues"
+      ><app-transactions-list [type]="transactionType"></app-transactions-list
+    ></mat-tab>
+  </mat-tab-group>
   <div class="flex">
-    <app-fab-button></app-fab-button>
+    <app-fab-button [type]="transactionType"></app-fab-button>
   </div>
 </div>
