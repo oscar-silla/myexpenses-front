@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { TransactionDateResponse } from '../types/models/response/expense-date/transaction-date-response.type';
+import { TransactionDateResponse } from '../types/models/response/transaction-date/transaction-date-response.type';
 import { ExpenseRequest } from '../types/models/request/expense/expense-request.type';
 import { ExpenseResponse } from '../types/models/response/expense/expense-response.type';
 

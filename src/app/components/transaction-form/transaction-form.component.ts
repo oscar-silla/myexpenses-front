@@ -25,6 +25,7 @@ type FormFields = {
   category: string;
   amount: number;
   description: string;
+  type: string;
 };
 
 @Component({
@@ -59,10 +60,13 @@ export class TransactionFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params: ParamMap) => {
-      params.get('type') === this.transactionTypes[0]
-        ? (this.transactionTypeIndex = 0)
-        : (this.transactionTypeIndex = 1);
+      this.profileForm.get("type")?.setValue(params.get('type'))
     });
+  }
+
+  onTransactionTypeChange(index: number) {
+    this.transactionTypeIndex = index;
+    this.profileForm.get("type")?.setValue(this.transactionTypes[this.transactionTypeIndex])
   }
 
   openDialog() {

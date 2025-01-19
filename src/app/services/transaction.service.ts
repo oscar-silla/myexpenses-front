@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TransactionDateResponse } from '../types/models/response/expense-date/transaction-date-response.type';
+import { TransactionDateResponse } from '../types/models/response/transaction-date/transaction-date-response.type';
 import { TransactionServicePort } from '../interfaces/transaction-service.interface';
 import { ExpenseRequest } from '../types/models/request/expense/expense-request.type';
 import { ExpenseResponse } from '../types/models/response/expense/expense-response.type';

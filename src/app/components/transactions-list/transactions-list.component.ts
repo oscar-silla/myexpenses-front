@@ -8,8 +8,8 @@ import {
 import { TransactionService } from '../../services/transaction.service';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-import { TransactionDate } from '../../types/models/response/expense-date/transaction-date.type';
-import { TransactionDateResponse } from '../../types/models/response/expense-date/transaction-date-response.type';
+import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
+import { TransactionDateResponse } from '../../types/models/response/transaction-date/transaction-date-response.type';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
