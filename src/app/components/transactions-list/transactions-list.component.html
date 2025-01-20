@@ -14,7 +14,12 @@
     } @if (type === 'EXPENSE') {
       @for (expense of transactionDate.expenses; track expense.id) {
         <div class="expense-item">
-          <mat-list-item role="listitem" class="expense-list-item" routerLink="/transactions/{{ expense.id }}">
+          <mat-list-item 
+            role="listitem" 
+            class="expense-list-item" 
+            [routerLink]="['/transactions', expense.id]" 
+            [queryParams]="{type: type}"
+          >
             <div class="flex expense-details">
               <span class="expense-description">{{ expense.description }}</span>
               <span class="expense-amount">{{ expense.amount }}€</span>
@@ -25,7 +30,12 @@
     } @else {
       @for (expense of transactionDate.revenues; track expense.id) {
         <div class="expense-item">
-          <mat-list-item role="listitem" class="expense-list-item" routerLink="/transactions/{{ expense.id }}">
+          <mat-list-item 
+            role="listitem" 
+            class="expense-list-item" 
+            [routerLink]="['/transactions', expense.id]" 
+            [queryParams]="{type: type}"
+          >
             <div class="flex expense-details">
               <span class="expense-description">{{ expense.description }}</span>
               <span class="expense-amount">{{ expense.amount }}€</span>
