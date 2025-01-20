@@ -13,13 +13,14 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TransactionService } from '../../services/transaction.service';
-import { ExpenseRequest } from '../../types/models/request/expense/expense-request.type';
+import { TransactionRequest } from '../../types/models/request/transaction/transaction-request.type';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { ExpenseResponse } from '../../types/models/response/expense/expense-response.type';
+import { TransactionResponse } from '../../types/models/response/transaction/transaction-response.type';
 import { CommonModule } from '@angular/common';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../shared/dialog/dialog.component';
+import { TransactionQueryParams } from '../../types/models/request/transaction/transaction-queryparams.type';
 
 type FormFields = {
   category: string;
@@ -46,14 +47,14 @@ type FormFields = {
   styleUrl: './transaction-form.component.css',
 })
 export class TransactionFormComponent implements OnInit, OnChanges {
-  @Input() expense?: ExpenseResponse;
+  @Input() transaction?: TransactionResponse;
   @Input() operationType?: string;
   transactionTypeIndex?: number;
   transactionTypes: string[] = ['EXPENSE', 'REVENUE'];
   readonly dialog = inject(MatDialog);
 
   constructor(
-    private expenseService: TransactionService,
+    private transactionService: TransactionService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -73,12 +74,12 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     const dialogRef = this.dialog.open(DialogComponent);
     dialogRef.afterClosed().subscribe((isDelete: boolean) => {
       if (isDelete) {
-        this.expenseService.delete(this.expense!.id.toString()).subscribe({
+        this.transactionService.delete(this.transaction!.id.toString()).subscribe({
           next: () => {
             this.router.navigate(['/home']);
           },
           error: (err) => {
-            console.log('Error deleting expense', err);
+            console.log('Error deleting transaction', err);
           },
         });
       }
@@ -86,11 +87,11 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   }
 
   readonly categories: string[] = [
-    'Food',
-    'Home',
-    'Financies',
-    'Work',
-    'Entertainment',
+    'FOOD',
+    'HOME',
+    'FINANCES',
+    'WORK',
+    'ENTERTAINMENT',
   ];
 
   profileForm = new FormGroup({
@@ -101,55 +102,60 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['expense'] && changes['expense'].currentValue) {
-      this.expense && this.setFormValues(this.expense);
+    if (changes['transaction'] && changes['transaction'].currentValue) {
+      this.route.queryParamMap.subscribe((params: ParamMap) => {
+        this.profileForm.get("type")?.setValue(params.get('type'))
+      });
+      this.transaction && this.setFormValues(this.transaction);
     }
+    
   }
 
   setTransactionType(event: MatTabChangeEvent) {
     console.log(this.transactionTypes[event.index])
   }
 
-  private setFormValues(expense: ExpenseResponse) {
+  private setFormValues(transaction: TransactionResponse) {
     this.profileForm.patchValue({
-      category: expense.category,
-      amount: expense.amount,
-      description: expense.description,
+      category: transaction.category,
+      amount: transaction.amount,
+      description: transaction.description,
     });
   }
 
   onCreate() {
-    const expenseResquest = this.mapToExpenseRequest(
+    const transactionResquest = this.mapToTransactionRequest(
       this.profileForm.value as FormFields
     );
-    this.expenseService.save(expenseResquest).subscribe({
+    this.transactionService.save(transactionResquest).subscribe({
       next: () => {
         this.router.navigate(['/home']);
       },
       error: (err) => {
-        console.log('Error saving expense', err);
+        console.log('Error saving transaction', err);
       },
     });
   }
 
   onModify() {
-    const expenseResquest = this.mapToExpenseRequest(
+    const transactionRequest = this.mapToTransactionRequest(
       this.profileForm.value as FormFields
     );
-    expenseResquest.date = this.expense!.date;
-    this.expenseService
-      .modify(this.expense!.id.toString(), expenseResquest)
+    transactionRequest.date = this.transaction!.date; 
+    const transactionQueryParams: TransactionQueryParams = {type: transactionRequest.type}
+    this.transactionService
+      .modify(this.transaction!.id.toString(), transactionRequest, transactionQueryParams)
       .subscribe({
         next: () => {
           this.router.navigate(['/home']);
         },
         error: (err) => {
-          console.log('Error modifying expense', err);
+          console.log('Error modifiying transaction', err);
         },
       });
   }
 
-  private mapToExpenseRequest(formValues: FormFields): ExpenseRequest {
+  private mapToTransactionRequest(formValues: FormFields): TransactionRequest {
     return {
       ...formValues,
       date: new Date(),
@@ -159,9 +165,9 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   formValuesChanged(): boolean {
     const currentFormValues = this.profileForm.value;
     return (
-      currentFormValues.amount !== this.expense?.amount ||
-      currentFormValues.category !== this.expense?.category ||
-      currentFormValues.description !== this.expense?.description
+      currentFormValues.amount !== this.transaction?.amount ||
+      currentFormValues.category !== this.transaction?.category ||
+      currentFormValues.description !== this.transaction?.description
     );
   }
 }

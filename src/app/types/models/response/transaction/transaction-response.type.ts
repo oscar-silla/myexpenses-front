@@ -1,4 +1,4 @@
-export type ExpenseResponse = {
+export type TransactionResponse = {
   id: number;
   date: Date;
   amount: number;

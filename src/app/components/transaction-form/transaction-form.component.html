@@ -45,7 +45,7 @@
 </form>
 
 <form
-  *ngIf="operationType === 'modify' && expense"
+  *ngIf="operationType === 'modify' && transaction"
   [formGroup]="profileForm"
   (ngSubmit)="onModify()"
 >
