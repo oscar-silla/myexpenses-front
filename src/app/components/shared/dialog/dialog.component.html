@@ -1,6 +1,6 @@
-<h2 mat-dialog-title>Delete expense</h2>
+<h2 mat-dialog-title>Delete {{data.type | capitalize }}</h2>
 <mat-dialog-content>
-  Would you like to delete this expense?
+  Would you like to delete this {{data.type | capitalize }}?
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close (click)="sendIsDelete(false)">No</button>

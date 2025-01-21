@@ -40,7 +40,6 @@ type FormFields = {
     MatChipsModule,
     CommonModule,
     ReactiveFormsModule,
-    DialogComponent,
     MatTabsModule,
   ],
   templateUrl: './transaction-form.component.html',
@@ -70,8 +69,8 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     this.profileForm.get("type")?.setValue(this.transactionTypes[this.transactionTypeIndex])
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DialogComponent);
+  onDelete() {
+    const dialogRef = this.dialog.open(DialogComponent, {data: {type: this.transactionTypes[this.transactionTypeIndex!]}});
     dialogRef.afterClosed().subscribe((isDelete: boolean) => {
       if (isDelete) {
         this.transactionService.delete(this.transaction!.id.toString()).subscribe({
@@ -104,15 +103,12 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['transaction'] && changes['transaction'].currentValue) {
       this.route.queryParamMap.subscribe((params: ParamMap) => {
-        this.profileForm.get("type")?.setValue(params.get('type'))
+        this.profileForm.get("type")?.setValue(params.get('type'));
+        this.transactionTypeIndex = this.transactionTypes.indexOf(params.get('type')!);
       });
       this.transaction && this.setFormValues(this.transaction);
     }
     
-  }
-
-  setTransactionType(event: MatTabChangeEvent) {
-    console.log(this.transactionTypes[event.index])
   }
 
   private setFormValues(transaction: TransactionResponse) {
