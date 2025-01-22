@@ -75,7 +75,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
       if (isDelete) {
         this.transactionService.delete(this.transaction!.id.toString()).subscribe({
           next: () => {
-            this.router.navigate(['/home']);
+            this.router.navigate(['/home'], {queryParams: {type: this.transactionTypes[this.transactionTypeIndex!]}});
           },
           error: (err) => {
             console.log('Error deleting transaction', err);
@@ -125,7 +125,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     );
     this.transactionService.save(transactionResquest).subscribe({
       next: () => {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/home'], {queryParams: {type: transactionResquest.type}});
       },
       error: (err) => {
         console.log('Error saving transaction', err);
@@ -143,7 +143,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
       .modify(this.transaction!.id.toString(), transactionRequest, transactionQueryParams)
       .subscribe({
         next: () => {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/home'], {queryParams: {type: transactionRequest.type}});
         },
         error: (err) => {
           console.log('Error modifiying transaction', err);
