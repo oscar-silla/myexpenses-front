@@ -1,5 +1,9 @@
 <div>
-  <mat-tab-group animationDuration="0ms" (selectedTabChange)="setTransactionType($event)">
+  <mat-tab-group 
+    animationDuration="0ms" 
+    (selectedTabChange)="setTransactionType($event)"
+    [selectedIndex]="transactionTypeIndex"
+  >
     <mat-tab label="Expenses"
       ><app-transactions-list [type]="transactionType"></app-transactions-list
     ></mat-tab>
