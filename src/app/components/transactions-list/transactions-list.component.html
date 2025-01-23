@@ -1,5 +1,5 @@
 <mat-list class="expense-list" role="list">
-  @for (transactionDate of transactionDates; track transactionDate.date) {
+  @for (transactionDate of getTransactionDate(); track transactionDate.date) {
   <div class="expense-date">
     @if ((type === 'EXPENSE' && transactionDate.expenses.length > 0)
     || (type === 'REVENUE' && transactionDate.revenues.length > 0))
