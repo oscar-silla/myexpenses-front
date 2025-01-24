@@ -5,7 +5,8 @@
   padding-left: 16px;
   margin: 20px;
   color: #FFFFFF;
-  max-height: 800px;
+  min-height: 15vh;
+  max-height: 50vh;
   overflow-y: auto;
 }
 .expense-date {
