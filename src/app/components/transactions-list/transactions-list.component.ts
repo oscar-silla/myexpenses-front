@@ -52,4 +52,13 @@ export class TransactionsListComponent implements OnInit {
         : date.revenues.length > 0
     );
   }
+
+  getTransactionDateAmountByDate(date: Date): Number {
+    const transactionDate = this.transactionDates.find(
+      (transactionDate) => transactionDate.date === date
+    );
+    return this.type === 'EXPENSE'
+      ? transactionDate?.amount.expense!
+      : transactionDate?.amount.revenue!;
+  }
 }

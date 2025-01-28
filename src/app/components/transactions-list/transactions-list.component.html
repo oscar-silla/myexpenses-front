@@ -5,7 +5,14 @@
     || (type === 'REVENUE' && transactionDate.revenues.length > 0))
     {
       <mat-list-item class="date-item">
-        {{ transactionDate.date }}
+        <div class="flex">
+          <span>
+            {{ transactionDate.date }}
+          </span>
+          <span>
+            {{ getTransactionDateAmountByDate(transactionDate.date) }}€
+          </span>
+        </div>
       </mat-list-item>
     } @else {
       <div class="empty-message">
