@@ -1,15 +1,7 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { TransactionService } from '../../services/transaction.service';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
-import { TransactionDateResponse } from '../../types/models/response/transaction-date/transaction-date-response.type';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -19,25 +11,9 @@ import { RouterLink } from '@angular/router';
   templateUrl: './transactions-list.component.html',
   styleUrl: './transactions-list.component.css',
 })
-export class TransactionsListComponent implements OnInit {
+export class TransactionsListComponent {
   @Input() type: string = 'EXPENSE';
-  transactionDates: TransactionDate[] = [];
-
-  constructor(private expensesService: TransactionService) {}
-
-  ngOnInit(): void {
-    this.expensesService.getTransactions().subscribe({
-      next: (response: TransactionDateResponse) => {
-        this.transactionDates = response.results;
-      },
-      error(err) {
-        console.log('Error fetching expenses', err);
-      },
-      complete() {
-        console.log('Fetching expenses complete');
-      },
-    });
-  }
+  @Input() transactionDates: TransactionDate[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['type'] && changes['type'].currentValue) {
