@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TransactionsListComponent } from '../../components/transactions-list/transactions-list.component';
+import { PieChartComponent } from '../../components/pie-chart/pie-chart.component';
 import { FabButtonComponent } from '../../components/fab-button/fab-button.component';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -10,7 +11,12 @@ import { TransactionDate } from '../../types/models/response/transaction-date/tr
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TransactionsListComponent, FabButtonComponent, MatTabsModule],
+  imports: [
+    TransactionsListComponent,
+    PieChartComponent,
+    FabButtonComponent,
+    MatTabsModule,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
