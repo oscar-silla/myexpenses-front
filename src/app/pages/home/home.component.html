@@ -6,14 +6,14 @@
       [selectedIndex]="transactionTypeIndex"
     >
       <mat-tab label="Expenses"
-        ><app-transactions-list [type]="transactionType"></app-transactions-list
+        ><app-transactions-list [type]="transactionType" [transactionDates]="transactionDates"></app-transactions-list
       ></mat-tab>
       <mat-tab label="Revenues"
-        ><app-transactions-list [type]="transactionType"></app-transactions-list
+        ><app-transactions-list [type]="transactionType" [transactionDates]="transactionDates"></app-transactions-list
       ></mat-tab>
     </mat-tab-group>
   </div>
-  <app-pie-chart></app-pie-chart>
+  <app-pie-chart [transactionDates]="transactionDates" [type]="transactionType"></app-pie-chart>
   <div class="flex">
     <app-fab-button [type]="transactionType"></app-fab-button>
   </div>
