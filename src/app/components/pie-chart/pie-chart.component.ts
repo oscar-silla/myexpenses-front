@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import * as echarts from 'echarts';
 import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
-import { Transaction } from '../../types/domain/transaction.type';
 
 @Component({
   selector: 'app-pie-chart',
@@ -23,12 +22,6 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
   @Input() type: string = 'EXPENSE';
   @ViewChild('chartContainer', { static: false }) chartContainer!: ElementRef;
 
-  private sumByCategory(category: string, transactions: Transaction[]): number {
-    return transactions
-      .filter((transaction) => transaction.category === category)
-      .reduce((sum, transaction) => sum + transaction.amount, 0);
-  }
-
   private getTransactionsByType(type: string) {
     return this.transactionDates.flatMap((date) =>
       type === 'EXPENSE' ? date.expenses : date.revenues
@@ -40,15 +33,22 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
     const filteredTransactions = transactions.filter(
       (transaction) => transaction.amount > 0
     );
-    let result: { value: number; name: string }[] = [];
+    let results: { value: number; name: string }[] = [];
     filteredTransactions.forEach((transaction) => {
-      result.push({
-        value: this.sumByCategory(transaction.category, filteredTransactions),
-        name: transaction.category,
-      });
+      let result: { value: number; name: string } | undefined = results.find(
+        (r) => r.name === transaction.category
+      );
+      if (result) {
+        result.value += transaction.amount;
+      } else {
+        results.push({
+          value: transaction.amount,
+          name: transaction.category,
+        });
+      }
     });
-    console.log(result);
-    return result;
+    console.log(results.sort((a, b) => b.name.localeCompare(a.name)));
+    return results.sort((a, b) => b.name.localeCompare(a.name));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -69,9 +69,42 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
     if (!this.chartContainer || this.categories.length === 0) return;
 
     const myChart = echarts.init(this.chartContainer.nativeElement);
+
+    const categoryColors: Record<string, string> = {
+      HOME: '#FF6384',
+      WORK: '#36A2EB',
+      FINANCES: '#FFCE56',
+      FOOD: '#4BC0C0',
+      ENTERTAINMENT: '#4D4DFF',
+    };
+
+    const fallbackColors = [
+      '#9966FF',
+      '#FF9F40',
+      '#FF4D4D',
+      '#4DFF4D',
+      '#4D4DFF',
+    ];
+    let assignedColors = new Map<string, string>();
+    let fallbackIndex = 0;
+
+    this.categories.forEach((category) => {
+      console.log(category);
+      if (categoryColors[category.name]) {
+        assignedColors.set(category.name, categoryColors[category.name]);
+      } else {
+        // Si la categoría no tiene color asignado, usar uno de respaldo
+        assignedColors.set(category.name, fallbackColors[fallbackIndex]);
+        fallbackIndex = (fallbackIndex + 1) % fallbackColors.length; // Ciclar colores si hay más categorías
+      }
+    });
+
     const option = {
       tooltip: { trigger: 'item' },
       legend: { top: '5%', left: 'center' },
+      color: this.categories.map(
+        (category) => assignedColors.get(category.name) || '#000000'
+      ),
       series: [
         {
           name: 'Access From',
