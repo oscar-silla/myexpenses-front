@@ -78,24 +78,12 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
       ENTERTAINMENT: '#4D4DFF',
     };
 
-    const fallbackColors = [
-      '#9966FF',
-      '#FF9F40',
-      '#FF4D4D',
-      '#4DFF4D',
-      '#4D4DFF',
-    ];
     let assignedColors = new Map<string, string>();
-    let fallbackIndex = 0;
 
     this.categories.forEach((category) => {
       console.log(category);
       if (categoryColors[category.name]) {
         assignedColors.set(category.name, categoryColors[category.name]);
-      } else {
-        // Si la categoría no tiene color asignado, usar uno de respaldo
-        assignedColors.set(category.name, fallbackColors[fallbackIndex]);
-        fallbackIndex = (fallbackIndex + 1) % fallbackColors.length; // Ciclar colores si hay más categorías
       }
     });
 
