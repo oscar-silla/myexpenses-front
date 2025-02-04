@@ -47,7 +47,6 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
         });
       }
     });
-    console.log(results.sort((a, b) => b.name.localeCompare(a.name)));
     return results.sort((a, b) => b.name.localeCompare(a.name));
   }
 
@@ -57,7 +56,6 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
         changes['transactionDates'].currentValue?.length > 0) ||
       (changes['type'] && changes['type'].currentValue)
     ) {
-      console.log('Updating categories...');
       this.categories = this.buildCategories();
       this.updateChart();
     }
@@ -81,7 +79,6 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
     let assignedColors = new Map<string, string>();
 
     this.categories.forEach((category) => {
-      console.log(category);
       if (categoryColors[category.name]) {
         assignedColors.set(category.name, categoryColors[category.name]);
       }

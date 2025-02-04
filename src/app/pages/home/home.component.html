@@ -13,6 +13,9 @@
       ></mat-tab>
     </mat-tab-group>
   </div>
+  @if (transactionSummary.isLoaded) {
+    <app-transaction-summary [transactionSummary]="transactionSummary"></app-transaction-summary>
+  }
   <app-pie-chart [transactionDates]="transactionDates" [type]="transactionType"></app-pie-chart>
   <div class="flex">
     <app-fab-button [type]="transactionType"></app-fab-button>
