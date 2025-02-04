@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { TransactionsListComponent } from '../../components/transactions-list/transactions-list.component';
+import { TransactionSummaryComponent } from '../../components/adhoc/transaction/transaction-summary/transaction-summary.component';
 import { PieChartComponent } from '../../components/pie-chart/pie-chart.component';
 import { FabButtonComponent } from '../../components/fab-button/fab-button.component';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { TransactionService } from '../../services/transaction.service';
 import { TransactionDateResponse } from '../../types/models/response/transaction-date/transaction-date-response.type';
 import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
+import { TransactionSummary } from '../../types/models/response/TransactionSummary.type';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     TransactionsListComponent,
+    TransactionSummaryComponent,
     PieChartComponent,
     FabButtonComponent,
     MatTabsModule,
@@ -25,10 +28,16 @@ export class HomeComponent implements OnInit {
   transactionTypes: string[] = ['EXPENSE', 'REVENUE'];
   transactionTypeIndex?: number;
   transactionDates: TransactionDate[] = [];
+  transactionSummary: TransactionSummary = {
+    totalExpense: 0,
+    totalRevenue: 0,
+    totalMoney: 0,
+    isLoaded: false,
+  };
 
   constructor(
     private route: ActivatedRoute,
-    private expensesService: TransactionService
+    private transactionService: TransactionService
   ) {}
 
   ngOnInit(): void {
@@ -40,9 +49,10 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    this.expensesService.getTransactions().subscribe({
+    this.transactionService.getTransactions().subscribe({
       next: (response: TransactionDateResponse) => {
         this.transactionDates = response.results;
+        this.transactionSummary = { ...response.summary, isLoaded: true };
       },
       error(err) {
         console.log('Error fetching expenses', err);

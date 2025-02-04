@@ -1,0 +1,25 @@
+.card {
+    background-color: #3e4756;
+    color: white;
+    margin: 0px 20px 20px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 3px solid #353a44;
+}
+
+.outlined {
+    text-decoration: underline;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.gold {
+    color: #FFD700;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
