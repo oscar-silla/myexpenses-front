@@ -5,4 +5,8 @@
 app-fab-button {
     margin-left: auto;
     padding: 4% 4% 0% 0%;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
 }

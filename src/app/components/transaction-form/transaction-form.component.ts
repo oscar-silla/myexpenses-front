@@ -60,27 +60,42 @@ export class TransactionFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params: ParamMap) => {
-      this.profileForm.get("type")?.setValue(params.get('type'))
+      if (params.get('type')) {
+        this.profileForm.get('type')?.setValue(params.get('type'));
+        this.transactionTypeIndex = this.transactionTypes.indexOf(
+          params.get('type')!
+        );
+      }
     });
   }
 
   onTransactionTypeChange(index: number) {
     this.transactionTypeIndex = index;
-    this.profileForm.get("type")?.setValue(this.transactionTypes[this.transactionTypeIndex])
+    this.profileForm
+      .get('type')
+      ?.setValue(this.transactionTypes[this.transactionTypeIndex]);
   }
 
   onDelete() {
-    const dialogRef = this.dialog.open(DialogComponent, {data: {type: this.transactionTypes[this.transactionTypeIndex!]}});
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: { type: this.transactionTypes[this.transactionTypeIndex!] },
+    });
     dialogRef.afterClosed().subscribe((isDelete: boolean) => {
       if (isDelete) {
-        this.transactionService.delete(this.transaction!.id.toString()).subscribe({
-          next: () => {
-            this.router.navigate(['/home'], {queryParams: {type: this.transactionTypes[this.transactionTypeIndex!]}});
-          },
-          error: (err) => {
-            console.log('Error deleting transaction', err);
-          },
-        });
+        this.transactionService
+          .delete(this.transaction!.id.toString())
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/home'], {
+                queryParams: {
+                  type: this.transactionTypes[this.transactionTypeIndex!],
+                },
+              });
+            },
+            error: (err) => {
+              console.log('Error deleting transaction', err);
+            },
+          });
       }
     });
   }
@@ -103,12 +118,13 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['transaction'] && changes['transaction'].currentValue) {
       this.route.queryParamMap.subscribe((params: ParamMap) => {
-        this.profileForm.get("type")?.setValue(params.get('type'));
-        this.transactionTypeIndex = this.transactionTypes.indexOf(params.get('type')!);
+        this.profileForm.get('type')?.setValue(params.get('type'));
+        this.transactionTypeIndex = this.transactionTypes.indexOf(
+          params.get('type')!
+        );
       });
       this.transaction && this.setFormValues(this.transaction);
     }
-    
   }
 
   private setFormValues(transaction: TransactionResponse) {
@@ -125,7 +141,9 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     );
     this.transactionService.save(transactionResquest).subscribe({
       next: () => {
-        this.router.navigate(['/home'], {queryParams: {type: transactionResquest.type}});
+        this.router.navigate(['/home'], {
+          queryParams: { type: transactionResquest.type },
+        });
       },
       error: (err) => {
         console.log('Error saving transaction', err);
@@ -137,13 +155,21 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     const transactionRequest = this.mapToTransactionRequest(
       this.profileForm.value as FormFields
     );
-    transactionRequest.date = this.transaction!.date; 
-    const transactionQueryParams: TransactionQueryParams = {type: transactionRequest.type}
+    transactionRequest.date = this.transaction!.date;
+    const transactionQueryParams: TransactionQueryParams = {
+      type: transactionRequest.type,
+    };
     this.transactionService
-      .modify(this.transaction!.id.toString(), transactionRequest, transactionQueryParams)
+      .modify(
+        this.transaction!.id.toString(),
+        transactionRequest,
+        transactionQueryParams
+      )
       .subscribe({
         next: () => {
-          this.router.navigate(['/home'], {queryParams: {type: transactionRequest.type}});
+          this.router.navigate(['/home'], {
+            queryParams: { type: transactionRequest.type },
+          });
         },
         error: (err) => {
           console.log('Error modifiying transaction', err);

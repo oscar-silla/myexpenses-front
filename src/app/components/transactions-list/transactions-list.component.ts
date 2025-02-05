@@ -3,11 +3,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-transactions-list',
   standalone: true,
-  imports: [MatListModule, MatDividerModule, RouterLink],
+  imports: [CommonModule, MatListModule, MatDividerModule, RouterLink],
   templateUrl: './transactions-list.component.html',
   styleUrl: './transactions-list.component.css',
 })

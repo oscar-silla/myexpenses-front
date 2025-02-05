@@ -1,6 +1,6 @@
-<mat-list class="expense-list" role="list">
+<mat-list class="transaction-list" role="list">
   @for (transactionDate of getTransactionDate(); track transactionDate.date) {
-  <div class="expense-date">
+  <div [ngClass]="{'transaction-date': !$last,'last-transaction': $last}">
     @if ((type === 'EXPENSE' && transactionDate.expenses.length > 0)
     || (type === 'REVENUE' && transactionDate.revenues.length > 0))
     {
@@ -19,33 +19,33 @@
         <mat-list-item>No hay elementos.</mat-list-item>
       </div>
     } @if (type === 'EXPENSE') {
-      @for (expense of transactionDate.expenses; track expense.id) {
-        <div class="expense-item">
+      @for (expense of transactionDate.expenses; track expense.id;) {
+        <div class="transaction-item">
           <mat-list-item 
             role="listitem" 
-            class="expense-list-item" 
+            class="transaction-list-item" 
             [routerLink]="['/transactions', expense.id]" 
             [queryParams]="{type: type}"
           >
-            <div class="flex expense-details">
-              <span class="expense-description">{{ expense.description }}</span>
-              <span class="expense-amount">{{ expense.amount }}€</span>
+            <div class="flex transaction-details">
+              <span class="transaction-description">{{ expense.description }}</span>
+              <span class="transaction-amount">{{ expense.amount }}€</span>
             </div>
           </mat-list-item>
         </div>
       }
     } @else {
       @for (expense of transactionDate.revenues; track expense.id) {
-        <div class="expense-item">
+        <div class="transaction-item">
           <mat-list-item 
             role="listitem" 
-            class="expense-list-item" 
+            class="transaction-list-item" 
             [routerLink]="['/transactions', expense.id]" 
             [queryParams]="{type: type}"
           >
-            <div class="flex expense-details">
-              <span class="expense-description">{{ expense.description }}</span>
-              <span class="expense-amount">{{ expense.amount }}€</span>
+            <div class="flex transaction-details">
+              <span class="transaction-description">{{ expense.description }}</span>
+              <span class="transaction-amount">{{ expense.amount }}€</span>
             </div>
           </mat-list-item>
         </div>
