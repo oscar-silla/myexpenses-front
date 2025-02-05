@@ -1,4 +1,4 @@
-.expense-list {
+.transaction-list {
   background-color: #2C2C34;
   border-radius: 12px;
   padding-right: 16px;
@@ -8,11 +8,18 @@
   min-height: 15vh;
   max-height: 50vh;
   overflow-y: auto;
+  border: 3px solid #353a44;;
 }
-.expense-date {
+.transaction-date {
   background-color: #353A44;
   border-radius: 10px;
   margin-bottom: 20px;
+  color: #b0c4de;
+  padding-bottom: 10px;
+}
+.last-transaction {
+  background-color: #353A44;
+  border-radius: 10px;
   color: #b0c4de;
   padding-bottom: 10px;
 }
@@ -29,7 +36,7 @@
   padding: 10px;
   border-radius: 10px;
 }
-.expense-item {
+.transaction-item {
   background-color: #3E4756;
   border-radius: 10px;
   margin: 10px;
@@ -39,18 +46,18 @@
   align-items: center;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
-.expense-list-item {
+.transaction-list-item {
   display: flex;
   justify-content: space-between;
   width: 100%;
   color: #EAEAEA;
 }
-.expense-description {
+.transaction-description {
   font-size: 14px;
   font-weight: 500;
   color: #EAEAEA;
 }
-.expense-amount {
+.transaction-amount {
   font-size: 16px;
   font-weight: bold;
   color: #FFD700;
@@ -67,7 +74,6 @@
   align-items: center;
   width: 100%;
 }
-
 .mdc-list {
   padding: 0px;
 }
