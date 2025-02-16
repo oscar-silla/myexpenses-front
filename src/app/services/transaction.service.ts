@@ -7,12 +7,14 @@ import { TransactionRequest } from '../types/models/request/transaction/transact
 import { TransactionResponse } from '../types/models/response/transaction/transaction-response.type';
 import { TransactionQueryParams } from '../types/models/request/transaction/transaction-queryparams.type';
 
+//const url = 'https://myexpenses-production.up.railway.app/economy/v1';
+const url = 'http://localhost:3000/economy/v1';
+
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService implements TransactionServicePort {
-  private baseUrl: string =
-    'https://myexpenses-production.up.railway.app/economy/v1';
+  private baseUrl: string = url;
   constructor(private http: HttpClient) {}
 
   getTransaction(id: string): Observable<TransactionResponse> {
