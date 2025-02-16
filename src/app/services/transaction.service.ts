@@ -11,11 +11,14 @@ import { TransactionQueryParams } from '../types/models/request/transaction/tran
   providedIn: 'root',
 })
 export class TransactionService implements TransactionServicePort {
-  private baseUrl: string = 'http://localhost:8080/economy/v1';
+  private baseUrl: string =
+    'https://myexpenses-production.up.railway.app/economy/v1';
   constructor(private http: HttpClient) {}
 
   getTransaction(id: string): Observable<TransactionResponse> {
-    return this.http.get<TransactionResponse>(`${this.baseUrl}/transactions/${id}`);
+    return this.http.get<TransactionResponse>(
+      `${this.baseUrl}/transactions/${id}`
+    );
   }
 
   public getTransactions(): Observable<TransactionDateResponse> {
@@ -28,7 +31,11 @@ export class TransactionService implements TransactionServicePort {
     return this.http.post<Object>(`${this.baseUrl}/transactions`, body);
   }
 
-  modify(id: string, expense: TransactionRequest, queryParams?: TransactionQueryParams): Observable<Object> {
+  modify(
+    id: string,
+    expense: TransactionRequest,
+    queryParams?: TransactionQueryParams
+  ): Observable<Object> {
     return this.http.patch<Object>(
       `${this.baseUrl}/transactions/${id}`,
       expense,
