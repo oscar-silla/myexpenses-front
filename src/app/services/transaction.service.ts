@@ -8,7 +8,7 @@ import { TransactionResponse } from '../types/models/response/transaction/transa
 import { TransactionQueryParams } from '../types/models/request/transaction/transaction-queryparams.type';
 
 //const url = 'https://myexpenses-production.up.railway.app/economy/v1';
-const url = 'http://localhost:3000/economy/v1';
+const url = 'http://localhost:8080/economy/v1';
 
 @Injectable({
   providedIn: 'root',
