@@ -4,11 +4,29 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import * as echarts from 'echarts';
+import { init, use } from 'echarts/core';
+import { PieChart } from 'echarts/charts';
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+} from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
 import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
+
+use([
+  PieChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  CanvasRenderer,
+]);
+
+type CategoryType = { value: number; name: string };
 
 @Component({
   selector: 'app-pie-chart',
@@ -17,37 +35,29 @@ import { TransactionDate } from '../../types/models/response/transaction-date/tr
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.css',
 })
-export class PieChartComponent implements AfterViewInit, OnChanges {
+export class PieChartComponent implements OnChanges {
   @Input() transactionDates: TransactionDate[] = [];
   @Input() type: string = 'EXPENSE';
   @ViewChild('chartContainer', { static: false }) chartContainer!: ElementRef;
+  private categories: CategoryType[] = [];
+  private chart: any | null = null;
 
-  private getTransactionsByType(type: string) {
-    return this.transactionDates.flatMap((date) =>
-      type === 'EXPENSE' ? date.expenses : date.revenues
-    );
-  }
-
-  private buildCategories(): { value: number; name: string }[] {
-    const transactions = this.getTransactionsByType(this.type);
-    const filteredTransactions = transactions.filter(
-      (transaction) => transaction.amount > 0
-    );
-    let results: { value: number; name: string }[] = [];
-    filteredTransactions.forEach((transaction) => {
-      let result: { value: number; name: string } | undefined = results.find(
-        (r) => r.name === transaction.category
-      );
-      if (result) {
-        result.value += transaction.amount;
-      } else {
-        results.push({
-          value: transaction.amount,
-          name: transaction.category,
-        });
-      }
-    });
-    return results.sort((a, b) => b.name.localeCompare(a.name));
+  private collectCategoriesByTransactionType(type: string): CategoryType[] {
+    return this.transactionDates
+      .flatMap((date) => (type === 'EXPENSE' ? date.expenses : date.revenues))
+      .filter((transaction) => transaction.amount > 0)
+      .reduce((acc: CategoryType[], transaction) => {
+        const existingCategory = acc.find(
+          (cat) => cat.name === transaction.category
+        );
+        if (existingCategory) {
+          existingCategory.value += transaction.amount;
+        } else {
+          acc.push({ value: transaction.amount, name: transaction.category });
+        }
+        return acc;
+      }, [])
+      .sort((a, b) => b.name.localeCompare(a.name));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -56,17 +66,19 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
         changes['transactionDates'].currentValue?.length > 0) ||
       (changes['type'] && changes['type'].currentValue)
     ) {
-      this.categories = this.buildCategories();
-      this.updateChart();
+      this.categories = this.collectCategoriesByTransactionType(this.type);
     }
+    this.updateChart();
   }
 
-  categories: { value: number; name: string }[] = [];
-
   private updateChart() {
+    // Dispose of the existing chart if it exists
+    if (this.chart) this.removeChart();
+
     if (!this.chartContainer || this.categories.length === 0) return;
 
-    const myChart = echarts.init(this.chartContainer.nativeElement);
+    // Initialize new chart
+    this.chart = init(this.chartContainer.nativeElement);
 
     const categoryColors: Record<string, string> = {
       HOME: '#FF6384',
@@ -106,11 +118,11 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
       ],
     };
 
-    myChart.setOption(option);
-    window.addEventListener('resize', () => myChart.resize());
+    this.chart.setOption(option);
   }
 
-  ngAfterViewInit() {
-    this.updateChart();
+  private removeChart() {
+    this.chart.dispose();
+    this.chart = null;
   }
 }
