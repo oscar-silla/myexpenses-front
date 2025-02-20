@@ -17,6 +17,7 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
+import { LITERALS } from '../../constants/literals';
 
 use([
   PieChart,
@@ -39,6 +40,7 @@ export class PieChartComponent implements OnChanges {
   @Input() transactionDates: TransactionDate[] = [];
   @Input() type: string = 'EXPENSE';
   @ViewChild('chartContainer', { static: false }) chartContainer!: ElementRef;
+  literals = LITERALS;
   private categories: CategoryType[] = [];
   private chart: any | null = null;
 
@@ -66,27 +68,29 @@ export class PieChartComponent implements OnChanges {
         changes['transactionDates'].currentValue?.length > 0) ||
       (changes['type'] && changes['type'].currentValue)
     ) {
-      this.categories = this.collectCategoriesByTransactionType(this.type);
+      this.categories = this.translateCategoryToSpanish(
+        this.collectCategoriesByTransactionType(this.type)
+      );
     }
     this.updateChart();
   }
 
   private updateChart() {
-    // Dispose of the existing chart if it exists
     if (this.chart) this.removeChart();
 
     if (!this.chartContainer || this.categories.length === 0) return;
 
-    // Initialize new chart
     this.chart = init(this.chartContainer.nativeElement);
 
     const categoryColors: Record<string, string> = {
-      HOME: '#FF6384',
-      WORK: '#36A2EB',
-      FINANCES: '#FFCE56',
-      FOOD: '#4BC0C0',
-      ENTERTAINMENT: '#4D4DFF',
+      [this.literals.categories.home]: '#FF6384',
+      [this.literals.categories.work]: '#36A2EB',
+      [this.literals.categories.finances]: '#FFCE56',
+      [this.literals.categories.food]: '#4BC0C0',
+      [this.literals.categories.entertainment]: '#4D4DFF',
     };
+
+    console.log(this.categories);
 
     let assignedColors = new Map<string, string>();
 
@@ -124,5 +128,26 @@ export class PieChartComponent implements OnChanges {
   private removeChart() {
     this.chart.dispose();
     this.chart = null;
+  }
+
+  private translateCategoryToSpanish(
+    categories: CategoryType[]
+  ): CategoryType[] {
+    return categories.map((category) => {
+      switch (category.name.toUpperCase()) {
+        case 'HOME':
+          return { ...category, name: this.literals.categories.home };
+        case 'WORK':
+          return { ...category, name: this.literals.categories.work };
+        case 'FINANCES':
+          return { ...category, name: this.literals.categories.finances };
+        case 'FOOD':
+          return { ...category, name: this.literals.categories.food };
+        case 'ENTERTAINMENT':
+          return { ...category, name: this.literals.categories.entertainment };
+        default:
+          return category;
+      }
+    });
   }
 }

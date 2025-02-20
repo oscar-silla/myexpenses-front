@@ -9,7 +9,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
+import { LITERALS } from '../../../constants/literals';
 
 @Component({
   selector: 'app-dialog',
@@ -20,16 +20,30 @@ import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
     MatDialogActions,
     MatDialogClose,
     MatButtonModule,
-    CapitalizePipe
   ],
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogComponent {
-  constructor(private dialogRef: MatDialogRef<DialogComponent>,
+  literals = LITERALS;
+  constructor(
+    private dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { type: string }
-  ) {}
+  ) {
+    this.data.type = this.translateType(this.data.type);
+  }
+
+  private translateType(type: string) {
+    switch (type) {
+      case 'EXPENSE':
+        return this.literals.expense.toLowerCase();
+      case 'REVENUE':
+        return this.literals.revenue.toLowerCase();
+      default:
+        return type;
+    }
+  }
 
   sendIsDelete(isDelete: boolean) {
     this.dialogRef.close(isDelete);

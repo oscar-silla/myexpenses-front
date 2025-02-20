@@ -9,6 +9,7 @@ import { TransactionService } from '../../services/transaction.service';
 import { TransactionDateResponse } from '../../types/models/response/transaction-date/transaction-date-response.type';
 import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
 import { TransactionSummary } from '../../types/models/response/TransactionSummary.type';
+import { LITERALS } from '../../constants/literals';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,7 @@ import { TransactionSummary } from '../../types/models/response/TransactionSumma
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
+  literals = LITERALS;
   transactionType: string = 'EXPENSE';
   transactionTypes: string[] = ['EXPENSE', 'REVENUE'];
   transactionTypeIndex?: number;

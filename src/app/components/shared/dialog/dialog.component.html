@@ -1,15 +1,15 @@
-<h2 mat-dialog-title>Delete {{data.type | capitalize }}</h2>
+<h2 mat-dialog-title>{{literals.delete}} {{data.type }}</h2>
 <mat-dialog-content>
-  Would you like to delete this {{data.type | capitalize }}?
+  ¿Desea eliminar este {{data.type }}?
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close (click)="sendIsDelete(false)">No</button>
+  <button mat-button mat-dialog-close (click)="sendIsDelete(false)">{{literals.no}}</button>
   <button
     mat-button
     mat-dialog-close
     cdkFocusInitial
     (click)="sendIsDelete(true)"
   >
-    Ok
+    {{literals.yes}}
   </button>
 </mat-dialog-actions>
