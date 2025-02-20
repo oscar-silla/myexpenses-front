@@ -21,6 +21,7 @@ import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../shared/dialog/dialog.component';
 import { TransactionQueryParams } from '../../types/models/request/transaction/transaction-queryparams.type';
+import { LITERALS } from '../../constants/literals';
 
 type FormFields = {
   category: string;
@@ -48,6 +49,7 @@ type FormFields = {
 export class TransactionFormComponent implements OnInit, OnChanges {
   @Input() transaction?: TransactionResponse;
   @Input() operationType?: string;
+  literals = LITERALS;
   transactionTypeIndex?: number;
   transactionTypes: string[] = ['EXPENSE', 'REVENUE'];
   readonly dialog = inject(MatDialog);
@@ -101,11 +103,11 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   }
 
   readonly categories: string[] = [
-    'FOOD',
-    'HOME',
-    'FINANCES',
-    'WORK',
-    'ENTERTAINMENT',
+    this.literals.categories.food.toUpperCase(),
+    this.literals.categories.home.toUpperCase(),
+    this.literals.categories.finances.toUpperCase(),
+    this.literals.categories.work.toUpperCase(),
+    this.literals.categories.entertainment.toUpperCase(),
   ];
 
   profileForm = new FormGroup({
@@ -180,8 +182,26 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   private mapToTransactionRequest(formValues: FormFields): TransactionRequest {
     return {
       ...formValues,
+      category: this.translateCategory(formValues.category),
       date: new Date(),
     };
+  }
+
+  private translateCategory(category: string): string {
+    switch (category) {
+      case this.literals.categories.food.toUpperCase():
+        return 'FOOD';
+      case this.literals.categories.home.toUpperCase():
+        return 'HOME';
+      case this.literals.categories.finances.toUpperCase():
+        return 'FINANCES';
+      case this.literals.categories.work.toUpperCase():
+        return 'WORK';
+      case this.literals.categories.entertainment.toUpperCase():
+        return 'ENTERTAINMENT';
+      default:
+        return category;
+    }
   }
 
   formValuesChanged(): boolean {

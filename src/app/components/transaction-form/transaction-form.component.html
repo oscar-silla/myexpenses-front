@@ -8,8 +8,8 @@
     (selectedIndexChange)="onTransactionTypeChange($event)"
     selectedIndex={{transactionTypeIndex}}
   >
-    <mat-tab label="Expense"></mat-tab>
-    <mat-tab label="Revenue"></mat-tab>
+    <mat-tab label={{literals.expense}}></mat-tab>
+    <mat-tab label={{literals.revenue}}></mat-tab>
   </mat-tab-group>
   <mat-chip-listbox
     class="mat-mdc-chip-set-stacked"
@@ -22,24 +22,24 @@
     }
   </mat-chip-listbox>
   <div class="right">
-    <button mat-button>Show more</button>
+    <button mat-button>{{literals.showMore}}</button>
   </div>
 
   <mat-form-field appearance="fill">
-    <mat-label>Amount</mat-label>
+    <mat-label>{{literals.amount}}</mat-label>
     <input required matInput type="number" formControlName="amount" />
     <mat-icon matSuffix>paid</mat-icon>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Description</mat-label>
+    <mat-label>{{literals.description}}</mat-label>
     <input required matInput type="text" formControlName="description" />
     <mat-icon matSuffix>description</mat-icon>
   </mat-form-field>
 
   <div class="center">
     <button mat-button type="submit" [disabled]="!profileForm.valid">
-      Create
+      {{literals.create}}
     </button>
   </div>
 </form>
@@ -60,17 +60,17 @@
     }
   </mat-chip-listbox>
   <div class="right">
-    <button mat-button>Show more</button>
+    <button mat-button>{{literals.showMore}}</button>
   </div>
 
   <mat-form-field appearance="fill">
-    <mat-label>Amount</mat-label>
+    <mat-label>{{literals.amount}}</mat-label>
     <input required matInput type="number" formControlName="amount" />
     <mat-icon matSuffix>paid</mat-icon>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Description</mat-label>
+    <mat-label>{{literals.description}}</mat-label>
     <input required matInput type="text" formControlName="description" />
     <mat-icon matSuffix>description</mat-icon>
   </mat-form-field>
@@ -81,12 +81,12 @@
       type="submit"
       [disabled]="!formValuesChanged() || !profileForm.valid"
     >
-      Save changes
+      {{literals.saveChanges}}
     </button>
   </div>
   <div class="center">
     <button type="button" mat-button (click)="onDelete()">
-      <span class="red">Delete</span>
+      <span class="red">{{literals.delete}}</span>
     </button>
   </div>
 </form>
