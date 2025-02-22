@@ -25,7 +25,7 @@ export class ToolbarComponent implements OnInit {
         () =>
           (this.currentRoute =
             this.activatedRoute.snapshot.firstChild?.routeConfig?.path ||
-            'home')
+            'inicio')
       );
   }
 }
