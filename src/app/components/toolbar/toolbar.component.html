@@ -1,10 +1,21 @@
 <mat-toolbar>
-  <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with menu icon"
-  >
-    <mat-icon>menu</mat-icon>
-  </button>
+  @if (this.currentRoute === this.literals.routes.home) {
+    <button
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with menu icon"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  } @else {
+    <button
+      (click)="this.goBack()"
+      mat-icon-button
+      class="example-icon"
+      aria-label="Arrow back icon"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  }
   <span>{{ this.currentRoute | capitalize }}</span>
 </mat-toolbar>

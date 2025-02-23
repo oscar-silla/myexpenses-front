@@ -90,8 +90,6 @@ export class PieChartComponent implements OnChanges {
       [this.literals.categories.entertainment]: '#4D4DFF',
     };
 
-    console.log(this.categories);
-
     let assignedColors = new Map<string, string>();
 
     this.categories.forEach((category) => {
