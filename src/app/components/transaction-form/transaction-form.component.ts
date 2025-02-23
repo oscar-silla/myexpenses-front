@@ -106,7 +106,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
           .subscribe({
             next: () => {
               this.isLoading = false;
-              this.router.navigate(['/home'], {
+              this.router.navigate(['/inicio'], {
                 queryParams: {
                   type: this.transactionTypes[this.transactionTypeIndex!],
                 },
@@ -152,7 +152,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     this.transactionService.save(transactionResquest).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigate(['/home'], {
+        this.router.navigate(['/inicio'], {
           queryParams: { type: transactionResquest.type },
         });
       },
@@ -181,7 +181,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
       .subscribe({
         next: () => {
           this.isLoading = false;
-          this.router.navigate(['/home'], {
+          this.router.navigate(['/inicio'], {
             queryParams: { type: transactionRequest.type },
           });
         },
