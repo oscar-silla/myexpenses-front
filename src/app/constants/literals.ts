@@ -22,4 +22,7 @@ export const LITERALS = {
   transactions: 'Transacciones',
   yes: 'Sí',
   no: 'No',
+  routes: {
+    home: 'inicio',
+  },
 };

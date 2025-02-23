@@ -5,6 +5,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { CapitalizePipe } from '../../pipes/capitalize.pipe';
+import { LITERALS } from '../../constants/literals';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-toolbar',
@@ -14,9 +16,14 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
   styleUrl: './toolbar.component.css',
 })
 export class ToolbarComponent implements OnInit {
+  literals = LITERALS;
   currentRoute: string = '';
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
     this.router.events
@@ -25,7 +32,11 @@ export class ToolbarComponent implements OnInit {
         () =>
           (this.currentRoute =
             this.activatedRoute.snapshot.firstChild?.routeConfig?.path ||
-            'inicio')
+            this.literals.routes.home)
       );
+  }
+
+  protected goBack() {
+    this.location.back();
   }
 }
