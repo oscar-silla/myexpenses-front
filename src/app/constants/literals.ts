@@ -24,5 +24,6 @@ export const LITERALS = {
   no: 'No',
   routes: {
     home: 'inicio',
+    slash: '/',
   },
 };

@@ -28,12 +28,19 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(
-        () =>
-          (this.currentRoute =
-            this.activatedRoute.snapshot.firstChild?.routeConfig?.path ||
-            this.literals.routes.home)
-      );
+      .subscribe(() => (this.currentRoute = this.getRouteName()));
+  }
+
+  private getRouteName(): string {
+    const path = this.activatedRoute.snapshot.firstChild?.routeConfig?.path;
+    if (path?.includes(this.literals.routes.slash)) {
+      return path.split(this.literals.routes.slash)[0];
+    } else if (path) {
+      console.log(path);
+      return path;
+    } else {
+      return this.literals.routes.home;
+    }
   }
 
   protected goBack() {
