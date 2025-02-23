@@ -1,3 +1,8 @@
+@if ((this.operationType === 'modify' && !this.transaction) || this.isLoading) {
+  <div class="mid-center">
+    <mat-spinner></mat-spinner>
+  </div>
+}
 <form
   *ngIf="operationType !== 'modify'"
   [formGroup]="profileForm"

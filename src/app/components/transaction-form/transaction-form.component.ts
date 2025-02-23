@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   inject,
   Input,
@@ -17,11 +18,12 @@ import { TransactionRequest } from '../../types/models/request/transaction/trans
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { TransactionResponse } from '../../types/models/response/transaction/transaction-response.type';
 import { CommonModule } from '@angular/common';
-import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../shared/dialog/dialog.component';
 import { TransactionQueryParams } from '../../types/models/request/transaction/transaction-queryparams.type';
 import { LITERALS } from '../../constants/literals';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 type FormFields = {
   category: string;
@@ -42,6 +44,7 @@ type FormFields = {
     CommonModule,
     ReactiveFormsModule,
     MatTabsModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './transaction-form.component.html',
   styleUrl: './transaction-form.component.css',
@@ -50,6 +53,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   @Input() transaction?: TransactionResponse;
   @Input() operationType?: string;
   literals = LITERALS;
+  isLoading: boolean = false;
   transactionTypeIndex?: number;
   transactionTypes: string[] = ['EXPENSE', 'REVENUE'];
   readonly dialog = inject(MatDialog);
@@ -71,6 +75,18 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['transaction'] && changes['transaction'].currentValue) {
+      this.route.queryParamMap.subscribe((params: ParamMap) => {
+        this.profileForm.get('type')?.setValue(params.get('type'));
+        this.transactionTypeIndex = this.transactionTypes.indexOf(
+          params.get('type')!
+        );
+      });
+      this.transaction && this.setFormValues(this.transaction);
+    }
+  }
+
   onTransactionTypeChange(index: number) {
     this.transactionTypeIndex = index;
     this.profileForm
@@ -84,10 +100,12 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     });
     dialogRef.afterClosed().subscribe((isDelete: boolean) => {
       if (isDelete) {
+        this.isLoading = true;
         this.transactionService
           .delete(this.transaction!.id.toString())
           .subscribe({
             next: () => {
+              this.isLoading = false;
               this.router.navigate(['/home'], {
                 queryParams: {
                   type: this.transactionTypes[this.transactionTypeIndex!],
@@ -96,6 +114,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
             },
             error: (err) => {
               console.log('Error deleting transaction', err);
+              this.isLoading = false;
             },
           });
       }
@@ -117,18 +136,6 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     type: new FormControl<string>(''),
   });
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['transaction'] && changes['transaction'].currentValue) {
-      this.route.queryParamMap.subscribe((params: ParamMap) => {
-        this.profileForm.get('type')?.setValue(params.get('type'));
-        this.transactionTypeIndex = this.transactionTypes.indexOf(
-          params.get('type')!
-        );
-      });
-      this.transaction && this.setFormValues(this.transaction);
-    }
-  }
-
   private setFormValues(transaction: TransactionResponse) {
     this.profileForm.patchValue({
       category: transaction.category,
@@ -141,14 +148,17 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     const transactionResquest = this.mapToTransactionRequest(
       this.profileForm.value as FormFields
     );
+    this.isLoading = true;
     this.transactionService.save(transactionResquest).subscribe({
       next: () => {
+        this.isLoading = false;
         this.router.navigate(['/home'], {
           queryParams: { type: transactionResquest.type },
         });
       },
       error: (err) => {
         console.log('Error saving transaction', err);
+        this.isLoading = false;
       },
     });
   }
@@ -161,6 +171,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     const transactionQueryParams: TransactionQueryParams = {
       type: transactionRequest.type,
     };
+    this.isLoading = true;
     this.transactionService
       .modify(
         this.transaction!.id.toString(),
@@ -169,12 +180,14 @@ export class TransactionFormComponent implements OnInit, OnChanges {
       )
       .subscribe({
         next: () => {
+          this.isLoading = false;
           this.router.navigate(['/home'], {
             queryParams: { type: transactionRequest.type },
           });
         },
         error: (err) => {
           console.log('Error modifiying transaction', err);
+          this.isLoading = false;
         },
       });
   }
