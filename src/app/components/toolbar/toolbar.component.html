@@ -1,21 +1,39 @@
-<mat-toolbar>
-  @if (this.currentRoute === this.literals.routes.home) {
-    <button
-      mat-icon-button
-      class="example-icon"
-      aria-label="Example icon-button with menu icon"
-    >
-      <mat-icon>menu</mat-icon>
-    </button>
-  } @else {
-    <button
-      (click)="this.goBack()"
-      mat-icon-button
-      class="example-icon"
-      aria-label="Arrow back icon"
-    >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-  }
-  <span>{{ this.currentRoute | capitalize }}</span>
-</mat-toolbar>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="over" position="start" class="example-sidenav">
+    <mat-nav-list>
+      <mat-list-item>
+        <a mat-list-item href="#">Compartir gastos</a>
+      </mat-list-item>
+    </mat-nav-list>
+    <button mat-button (click)="sidenav.close()">Cerrar</button>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar>
+      @if (this.currentRoute === this.literals.routes.home) {
+        <button
+          mat-icon-button
+          class="example-icon"
+          aria-label="Example icon-button with menu icon"
+          (click)="sidenav.open()"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+      } @else {
+        <button
+          (click)="this.goBack()"
+          mat-icon-button
+          class="example-icon"
+          aria-label="Arrow back icon"
+        >
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      }
+      <span>{{ this.currentRoute | capitalize }}</span>
+    </mat-toolbar>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

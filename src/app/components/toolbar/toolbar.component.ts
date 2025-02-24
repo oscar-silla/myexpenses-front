@@ -7,17 +7,30 @@ import { filter } from 'rxjs';
 import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 import { LITERALS } from '../../constants/literals';
 import { Location } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatNavList, MatListItem } from '@angular/material/list';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-toolbar',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CapitalizePipe],
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatNavList,
+    MatListItem,
+    CapitalizePipe,
+    RouterOutlet,
+  ],
   templateUrl: './toolbar.component.html',
   styleUrl: './toolbar.component.css',
 })
 export class ToolbarComponent implements OnInit {
   literals = LITERALS;
   currentRoute: string = '';
+  showMenu: boolean = false;
 
   constructor(
     private router: Router,
@@ -45,5 +58,10 @@ export class ToolbarComponent implements OnInit {
 
   protected goBack() {
     this.location.back();
+  }
+
+  protected openMenu(): boolean {
+    this.showMenu = !this.showMenu;
+    return this.showMenu;
   }
 }

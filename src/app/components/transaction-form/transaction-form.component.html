@@ -17,7 +17,7 @@
     <mat-tab label={{literals.revenue}}></mat-tab>
   </mat-tab-group>
   <mat-chip-listbox
-    class="mat-mdc-chip-set-stacked"
+    class="mat-mdc-chip-set-stacked mb2"
     aria-label="Cutest dog breeds"
     formControlName="category"
     required
@@ -26,9 +26,9 @@
     <mat-chip-option>{{ category }}</mat-chip-option>
     }
   </mat-chip-listbox>
-  <div class="right">
+  <!--<div class="right">
     <button mat-button>{{literals.showMore}}</button>
-  </div>
+  </div>-->
 
   <mat-form-field appearance="fill">
     <mat-label>{{literals.amount}}</mat-label>
@@ -55,7 +55,7 @@
   (ngSubmit)="onModify()"
 >
   <mat-chip-listbox
-    class="mat-mdc-chip-set-stacked"
+    class="mat-mdc-chip-set-stacked mb2"
     aria-label="Cutest dog breeds"
     formControlName="category"
     required
@@ -64,9 +64,9 @@
     <mat-chip-option>{{ category }}</mat-chip-option>
     }
   </mat-chip-listbox>
-  <div class="right">
+  <!--<div class="right">
     <button mat-button>{{literals.showMore}}</button>
-  </div>
+  </div>-->
 
   <mat-form-field appearance="fill">
     <mat-label>{{literals.amount}}</mat-label>
