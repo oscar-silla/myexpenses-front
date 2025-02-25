@@ -5,10 +5,10 @@
       (selectedTabChange)="setTransactionType($event)"
       [selectedIndex]="transactionTypeIndex"
     >
-      <mat-tab label={{literals.expenses}}
+      <mat-tab class="mat-tab" label={{literals.expenses}}
         ><app-transactions-list [type]="transactionType" [transactionDates]="transactionDates"></app-transactions-list
       ></mat-tab>
-      <mat-tab label={{literals.revenues}}
+      <mat-tab class="mat-tab" label={{literals.revenues}}
         ><app-transactions-list [type]="transactionType" [transactionDates]="transactionDates"></app-transactions-list
       ></mat-tab>
     </mat-tab-group>

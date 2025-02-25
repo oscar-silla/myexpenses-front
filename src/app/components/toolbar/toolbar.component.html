@@ -1,4 +1,4 @@
-<mat-sidenav-container class="example-container">
+<mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="over" position="start" class="example-sidenav">
     <mat-nav-list>
       <mat-list-item>
@@ -9,7 +9,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar>
+    <mat-toolbar class="mat-toolbar">
       @if (this.currentRoute === this.literals.routes.home) {
         <button
           mat-icon-button
@@ -17,7 +17,7 @@
           aria-label="Example icon-button with menu icon"
           (click)="sidenav.open()"
         >
-          <mat-icon>menu</mat-icon>
+          <mat-icon class="mat-icon">menu</mat-icon>
         </button>
       } @else {
         <button

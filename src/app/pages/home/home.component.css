@@ -2,6 +2,7 @@
 .flex {
     display: flex;
 }
+
 app-fab-button {
     margin-left: auto;
     padding: 4% 4% 0% 0%;
@@ -9,4 +10,8 @@ app-fab-button {
     bottom: 20px;
     right: 20px;
     z-index: 1000;
+}
+
+.mdc-tab__text-label {
+    color: #333333 !important;
 }

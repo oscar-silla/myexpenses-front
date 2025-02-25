@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TransactionsListComponent } from '../../components/transactions-list/transactions-list.component';
 import { TransactionSummaryComponent } from '../../components/adhoc/transaction/transaction-summary/transaction-summary.component';
 import { PieChartComponent } from '../../components/pie-chart/pie-chart.component';
@@ -14,6 +14,7 @@ import { LITERALS } from '../../constants/literals';
 @Component({
   selector: 'app-home',
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
   imports: [
     TransactionsListComponent,
     TransactionSummaryComponent,
