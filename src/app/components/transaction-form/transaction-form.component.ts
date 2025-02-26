@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  ViewEncapsulation,
   Component,
   inject,
   Input,
@@ -34,6 +34,7 @@ type FormFields = {
 
 @Component({
   selector: 'app-transaction-form',
+  encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -67,7 +68,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params: ParamMap) => {
       if (params.get('type')) {
-        this.profileForm.get('type')?.setValue(params.get('type'));
+        this.formGroup.get('type')?.setValue(params.get('type'));
         this.transactionTypeIndex = this.transactionTypes.indexOf(
           params.get('type')!
         );
@@ -78,7 +79,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['transaction'] && changes['transaction'].currentValue) {
       this.route.queryParamMap.subscribe((params: ParamMap) => {
-        this.profileForm.get('type')?.setValue(params.get('type'));
+        this.formGroup.get('type')?.setValue(params.get('type'));
         this.transactionTypeIndex = this.transactionTypes.indexOf(
           params.get('type')!
         );
@@ -89,7 +90,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
 
   onTransactionTypeChange(index: number) {
     this.transactionTypeIndex = index;
-    this.profileForm
+    this.formGroup
       .get('type')
       ?.setValue(this.transactionTypes[this.transactionTypeIndex]);
   }
@@ -129,15 +130,19 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     this.literals.categories.entertainment.toUpperCase(),
   ];
 
-  profileForm = new FormGroup({
+  formGroup = new FormGroup({
     category: new FormControl<string>(''),
     amount: new FormControl<number>(0),
     description: new FormControl<string>(''),
     type: new FormControl<string>(''),
   });
 
+  selectCategory(category: string) {
+    this.formGroup.controls['category'].setValue(category);
+  }
+
   private setFormValues(transaction: TransactionResponse) {
-    this.profileForm.patchValue({
+    this.formGroup.patchValue({
       category: transaction.category,
       amount: transaction.amount,
       description: transaction.description,
@@ -146,7 +151,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
 
   onCreate() {
     const transactionResquest = this.mapToTransactionRequest(
-      this.profileForm.value as FormFields
+      this.formGroup.value as FormFields
     );
     this.isLoading = true;
     this.transactionService.save(transactionResquest).subscribe({
@@ -165,7 +170,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
 
   onModify() {
     const transactionRequest = this.mapToTransactionRequest(
-      this.profileForm.value as FormFields
+      this.formGroup.value as FormFields
     );
     transactionRequest.date = this.transaction!.date;
     const transactionQueryParams: TransactionQueryParams = {
@@ -218,7 +223,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   }
 
   formValuesChanged(): boolean {
-    const currentFormValues = this.profileForm.value;
+    const currentFormValues = this.formGroup.value;
     return (
       currentFormValues.amount !== this.transaction?.amount ||
       currentFormValues.category !== this.transaction?.category ||

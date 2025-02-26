@@ -5,7 +5,7 @@
 }
 <form
   *ngIf="operationType !== 'modify'"
-  [formGroup]="profileForm"
+  [formGroup]="formGroup"
   (ngSubmit)="onCreate()"
 >
   <mat-tab-group
@@ -16,19 +16,16 @@
     <mat-tab label={{literals.expense}}></mat-tab>
     <mat-tab label={{literals.revenue}}></mat-tab>
   </mat-tab-group>
-  <mat-chip-listbox
-    class="mat-mdc-chip-set-stacked mb2"
-    aria-label="Cutest dog breeds"
-    formControlName="category"
-    required
-  >
-    @for (category of categories; track category) {
-    <mat-chip-option>{{ category }}</mat-chip-option>
-    }
-  </mat-chip-listbox>
-  <!--<div class="right">
-    <button mat-button>{{literals.showMore}}</button>
-  </div>-->
+
+  @for (category of categories; track category) {
+    <div class="div-mat-card">
+      <mat-card 
+        [ngClass]="{'selected': formGroup.controls['category'].value === category}" 
+        (click)="selectCategory(category)">
+        {{ category }}
+      </mat-card>
+    </div>
+  }
 
   <mat-form-field appearance="fill">
     <mat-label>{{literals.amount}}</mat-label>
@@ -43,7 +40,7 @@
   </mat-form-field>
 
   <div class="center">
-    <button mat-button type="submit" [disabled]="!profileForm.valid">
+    <button mat-button type="submit" [disabled]="!formGroup.valid">
       {{literals.create}}
     </button>
   </div>
@@ -51,7 +48,7 @@
 
 <form
   *ngIf="operationType === 'modify' && transaction"
-  [formGroup]="profileForm"
+  [formGroup]="formGroup"
   (ngSubmit)="onModify()"
 >
   <mat-chip-listbox
@@ -64,9 +61,6 @@
     <mat-chip-option>{{ category }}</mat-chip-option>
     }
   </mat-chip-listbox>
-  <!--<div class="right">
-    <button mat-button>{{literals.showMore}}</button>
-  </div>-->
 
   <mat-form-field appearance="fill">
     <mat-label>{{literals.amount}}</mat-label>
@@ -84,7 +78,7 @@
     <button
       mat-button
       type="submit"
-      [disabled]="!formValuesChanged() || !profileForm.valid"
+      [disabled]="!formValuesChanged() || !formGroup.valid"
     >
       {{literals.saveChanges}}
     </button>

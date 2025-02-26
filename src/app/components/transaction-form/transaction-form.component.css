@@ -2,8 +2,55 @@ mat-form-field {
     width: 100%;
 }
 
-mat-chip-listbox {
-    padding: 1%
+.mat-icon {
+    color: #333333 !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: #f5f5f5 !important;
+    border-radius: 8px;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: #333333 !important;  
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: #333333 !important;  
+}
+
+.div.mdc-line-ripple.mdc-line-ripple--active {
+    background-color: white !important;
+    color: #f5f5f5 !important;
+    outline: none !important;
+}
+
+
+.div-mat-card {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    width: 90%;
+}
+
+mat-card {
+    background: white;
+    width: 100%;
+    color: #333333;
+    padding: 10px 15px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+mat-card.selected {
+    background: linear-gradient(135deg, #007AFF, #0056D2);
+    color: white;
+    border: none;
+    transform: scale(0.95);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .center {
@@ -33,4 +80,8 @@ mat-chip-listbox {
 
 .mb2 {
     margin-bottom: 20px;
+}
+
+.mdc-tab__text-label {
+    color: #333333 !important;
 }
