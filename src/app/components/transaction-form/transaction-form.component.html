@@ -51,16 +51,15 @@
   [formGroup]="formGroup"
   (ngSubmit)="onModify()"
 >
-  <mat-chip-listbox
-    class="mat-mdc-chip-set-stacked mb2"
-    aria-label="Cutest dog breeds"
-    formControlName="category"
-    required
-  >
-    @for (category of categories; track category) {
-    <mat-chip-option>{{ category }}</mat-chip-option>
-    }
-  </mat-chip-listbox>
+  @for (category of categories; track category) {
+    <div class="div-mat-card">
+      <mat-card 
+        [ngClass]="{'selected': formGroup.controls['category'].value === category}" 
+        (click)="selectCategory(category)">
+        {{ category }}
+      </mat-card>
+    </div>
+  }
 
   <mat-form-field appearance="fill">
     <mat-label>{{literals.amount}}</mat-label>
