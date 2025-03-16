@@ -10,6 +10,7 @@ import { TransactionDateResponse } from '../../types/models/response/transaction
 import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
 import { TransactionSummary } from '../../types/models/response/TransactionSummary.type';
 import { LITERALS } from '../../constants/literals';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,7 @@ import { LITERALS } from '../../constants/literals';
     PieChartComponent,
     FabButtonComponent,
     MatTabsModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -31,6 +33,7 @@ export class HomeComponent implements OnInit {
   transactionTypes: string[] = ['EXPENSE', 'REVENUE'];
   transactionTypeIndex?: number;
   transactionDates: TransactionDate[] = [];
+  isLoading: boolean = false;
   transactionSummary: TransactionSummary = {
     totalExpense: 0,
     totalRevenue: 0,
@@ -44,6 +47,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.route.queryParams.subscribe((params: Params) => {
       const type = params['type'];
       if (type) {
@@ -56,12 +60,15 @@ export class HomeComponent implements OnInit {
       next: (response: TransactionDateResponse) => {
         this.transactionDates = response.results;
         this.transactionSummary = { ...response.summary, isLoaded: true };
+        this.isLoading = false;
       },
-      error(err) {
+      error: (err) => {
         console.log('Error fetching expenses', err);
+        this.isLoading = false;
       },
-      complete() {
+      complete: () => {
         console.log('Fetching expenses complete');
+        this.isLoading = false;
       },
     });
   }
