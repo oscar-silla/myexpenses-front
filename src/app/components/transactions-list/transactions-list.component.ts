@@ -45,8 +45,4 @@ export class TransactionsListComponent {
       ? transactionDate?.amount.expense!
       : transactionDate?.amount.revenue!;
   }
-
-  protected isLoading(): boolean {
-    return !this.transactionDates.length;
-  }
 }
