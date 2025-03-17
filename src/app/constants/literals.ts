@@ -24,6 +24,14 @@ export const LITERALS = {
   no: 'No',
   routes: {
     home: 'inicio',
+    registration: 'registro',
+    login: 'login',
     slash: '/',
   },
+  name: 'Nombre',
+  firstSurname: 'Primer apellido',
+  secondSurname: 'Segundo apellido',
+  email: 'Correo electrónico',
+  password: 'Contraseña',
+  confirmPassword: 'Confirmar contraseña',
 };

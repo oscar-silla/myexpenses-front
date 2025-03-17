@@ -20,14 +20,16 @@
           <mat-icon class="mat-icon">menu</mat-icon>
         </button>
       } @else {
-        <button
-          (click)="this.goBack()"
-          mat-icon-button
-          class="example-icon"
-          aria-label="Arrow back icon"
-        >
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+        @if (this.showArrowBack()) {
+          <button
+            (click)="this.goBack()"
+            mat-icon-button
+            class="example-icon"
+            aria-label="Arrow back icon"
+          >
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        }
       }
       <span>{{ this.currentRoute | capitalize }}</span>
     </mat-toolbar>

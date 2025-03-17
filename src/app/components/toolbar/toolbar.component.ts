@@ -64,4 +64,8 @@ export class ToolbarComponent implements OnInit {
     this.showMenu = !this.showMenu;
     return this.showMenu;
   }
+
+  protected showArrowBack(): boolean {
+    return this.currentRoute !== this.literals.routes.registration;
+  }
 }
