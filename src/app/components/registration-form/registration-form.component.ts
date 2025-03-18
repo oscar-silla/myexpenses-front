@@ -16,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LITERALS } from '../../constants/literals';
+import { UserService } from '../../services/user.service';
+import { UserRequest } from '../../types/models/request/user/user-request.type';
 
 @Component({
   selector: 'app-registration-form',
@@ -49,8 +51,32 @@ export class RegistrationFormComponent {
     { validators: this.passwordsMatchValidator() }
   );
 
+  constructor(private userService: UserService) {}
+
   protected onSubmit() {
-    console.log(this.formGroup.value);
+    this.userService
+      .save(this.mapToUserRequest(this.formGroup.value))
+      .subscribe({
+        next: () => {
+          console.log('User created successfully');
+        },
+        error: (err) => {
+          console.log('Error creating user', err);
+        },
+        complete: () => {
+          console.log('Creating user complete');
+        },
+      });
+  }
+
+  private mapToUserRequest(formValue: any): UserRequest {
+    return {
+      name: formValue.name,
+      firstSurname: formValue.firstSurname,
+      secondSurname: formValue.secondSurname,
+      email: formValue.email,
+      password: formValue.password,
+    };
   }
 
   private passwordsMatchValidator(): ValidatorFn {
