@@ -66,6 +66,9 @@ export class ToolbarComponent implements OnInit {
   }
 
   protected showArrowBack(): boolean {
-    return this.currentRoute !== this.literals.routes.registration;
+    return (
+      this.currentRoute !== this.literals.routes.registration &&
+      this.currentRoute !== this.literals.routes.login
+    );
   }
 }
