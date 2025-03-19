@@ -34,4 +34,5 @@ export const LITERALS = {
   email: 'Correo electrónico',
   password: 'Contraseña',
   confirmPassword: 'Confirmar contraseña',
+  login: 'Iniciar sesión',
 };
