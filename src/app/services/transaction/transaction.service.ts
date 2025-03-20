@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TransactionDateResponse } from '../types/models/response/transaction-date/transaction-date-response.type';
-import { TransactionServicePort } from '../interfaces/transaction-service.interface';
-import { TransactionRequest } from '../types/models/request/transaction/transaction-request.type';
-import { TransactionResponse } from '../types/models/response/transaction/transaction-response.type';
-import { TransactionQueryParams } from '../types/models/request/transaction/transaction-queryparams.type';
+import { TransactionDateResponse } from '../../types/models/response/transaction-date/transaction-date-response.type';
+import { TransactionServicePort } from '../../interfaces/transaction-service.interface';
+import { TransactionRequest } from '../../types/models/request/transaction/transaction-request.type';
+import { TransactionResponse } from '../../types/models/response/transaction/transaction-response.type';
+import { TransactionQueryParams } from '../../types/models/request/transaction/transaction-queryparams.type';
 
 const url = 'https://myexpenses-production.up.railway.app/economy/v1';
 //const url = 'http://localhost:8080/economy/v1';

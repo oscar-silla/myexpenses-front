@@ -5,7 +5,7 @@ import { PieChartComponent } from '../../components/pie-chart/pie-chart.componen
 import { FabButtonComponent } from '../../components/fab-button/fab-button.component';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Params } from '@angular/router';
-import { TransactionService } from '../../services/transaction.service';
+import { TransactionService } from '../../services/transaction/transaction.service';
 import { TransactionDateResponse } from '../../types/models/response/transaction-date/transaction-date-response.type';
 import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
 import { TransactionSummary } from '../../types/models/response/TransactionSummary.type';

@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TransactionService } from '../../services/transaction.service';
+import { TransactionService } from '../../services/transaction/transaction.service';
 import { TransactionRequest } from '../../types/models/request/transaction/transaction-request.type';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { TransactionResponse } from '../../types/models/response/transaction/transaction-response.type';
