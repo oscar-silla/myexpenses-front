@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserRequest } from '../types/models/request/user/user-request.type';
 import { Observable } from 'rxjs';
-import { UserServicePort } from '../interfaces/user-service.interface';
+import { UserServicePort } from '../../interfaces/user-service.interface';
+import { UserRequest } from '../../types/models/request/user/user-request.type';
 
 //const url = 'https://myexpenses-production.up.railway.app/economy/v1';
 const url = 'http://localhost:8080/economy/v1';

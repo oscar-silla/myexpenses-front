@@ -16,8 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LITERALS } from '../../constants/literals';
-import { UserService } from '../../services/user.service';
 import { UserRequest } from '../../types/models/request/user/user-request.type';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-registration-form',
