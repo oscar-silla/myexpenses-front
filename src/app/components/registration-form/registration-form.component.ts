@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -18,6 +18,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { LITERALS } from '../../constants/literals';
 import { UserRequest } from '../../types/models/request/user/user-request.type';
 import { UserService } from '../../services/user/user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlertComponent } from '../shared/alert/alert.component';
 
 @Component({
   selector: 'app-registration-form',
@@ -39,6 +41,10 @@ import { UserService } from '../../services/user/user.service';
 })
 export class RegistrationFormComponent {
   literals = LITERALS;
+  showEmailAlert: boolean = false;
+  showErrorAlert: boolean = false;
+  private userService = inject(UserService);
+  private snackBar = inject(MatSnackBar);
   formGroup = new FormGroup(
     {
       name: new FormControl<string>(''),
@@ -51,17 +57,44 @@ export class RegistrationFormComponent {
     { validators: this.passwordsMatchValidator() }
   );
 
-  constructor(private userService: UserService) {}
-
   protected onSubmit() {
     this.userService
       .save(this.mapToUserRequest(this.formGroup.value))
       .subscribe({
-        next: () => {
-          console.log('User created successfully');
+        next: (res) => {
+          if (res.status === 201) {
+            console.log('User created successfully');
+            this.showEmailAlert = true;
+            this.snackBar.openFromComponent(AlertComponent, {
+              duration: 3000,
+              data: { message: 'Se ha enviado un correo de confirmación' },
+              panelClass: ['snackbar-success'],
+            });
+            setTimeout(() => {
+              this.showEmailAlert = false;
+            }, 3000);
+          } else {
+            this.showErrorAlert = true;
+            this.snackBar.openFromComponent(AlertComponent, {
+              duration: 3000,
+              data: { message: 'Error al crear el usuario' },
+              panelClass: ['snackbar-error'],
+            });
+            setTimeout(() => {
+              this.showErrorAlert = false;
+            }, 3000);
+          }
         },
         error: (err) => {
-          console.log('Error creating user', err);
+          this.showErrorAlert = true;
+          this.snackBar.openFromComponent(AlertComponent, {
+            duration: 3000,
+            data: { message: 'Error al crear el usuario' },
+            panelClass: ['snackbar-error'],
+          });
+          setTimeout(() => {
+            this.showErrorAlert = false;
+          }, 3000);
         },
         complete: () => {
           console.log('Creating user complete');
