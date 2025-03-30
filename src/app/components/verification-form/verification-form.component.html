@@ -1,0 +1,11 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+        <mat-label>{{literals.code}}</mat-label>
+        <input required matInput type="text" formControlName="code" />
+    </mat-form-field>
+    <div class="center">
+        <button mat-button type="submit" [disabled]="!formGroup.valid">
+            {{literals.validate}}
+        </button>
+    </div>
+</form>
