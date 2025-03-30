@@ -36,4 +36,6 @@ export const LITERALS = {
   confirmPassword: 'Confirmar contraseña',
   login: 'Iniciar sesión',
   save: 'Guardar',
+  code: 'Código',
+  validate: 'Validar',
 };
