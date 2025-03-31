@@ -60,36 +60,24 @@ export class RegistrationFormComponent {
   );
 
   protected onSubmit() {
-    this.userService
-      .save(this.mapToUserRequest(this.formGroup.value))
-      .subscribe({
-        next: (res) => {
-          if (res.status === 201) {
-            console.log('User created successfully');
-            this.showEmailAlert = true;
-            this.snackBar.openFromComponent(AlertComponent, {
-              duration: 3000,
-              data: { message: 'Se ha enviado un correo de confirmación' },
-              panelClass: ['snackbar-success'],
-            });
-            this.router.navigate(['/verificacion']);
-            setTimeout(() => {
-              this.showEmailAlert = false;
-              this.formGroup.reset();
-            }, 3000);
-          } else {
-            this.showErrorAlert = true;
-            this.snackBar.openFromComponent(AlertComponent, {
-              duration: 3000,
-              data: { message: 'Error al crear el usuario' },
-              panelClass: ['snackbar-error'],
-            });
-            setTimeout(() => {
-              this.showErrorAlert = false;
-            }, 3000);
-          }
-        },
-        error: (err) => {
+    const user: UserRequest = this.mapToUserRequest(this.formGroup.value);
+    this.userService.save(user).subscribe({
+      next: (res) => {
+        if (res.status === 201) {
+          console.log('User created successfully');
+          this.showEmailAlert = true;
+          this.snackBar.openFromComponent(AlertComponent, {
+            duration: 3000,
+            data: { message: 'Se ha enviado un correo de confirmación' },
+            panelClass: ['snackbar-success'],
+          });
+          this.userService.setEmail(user.email);
+          this.router.navigate(['/verificacion']);
+          setTimeout(() => {
+            this.showEmailAlert = false;
+            this.formGroup.reset();
+          }, 3000);
+        } else {
           this.showErrorAlert = true;
           this.snackBar.openFromComponent(AlertComponent, {
             duration: 3000,
@@ -99,11 +87,23 @@ export class RegistrationFormComponent {
           setTimeout(() => {
             this.showErrorAlert = false;
           }, 3000);
-        },
-        complete: () => {
-          console.log('Creating user complete');
-        },
-      });
+        }
+      },
+      error: (err) => {
+        this.showErrorAlert = true;
+        this.snackBar.openFromComponent(AlertComponent, {
+          duration: 3000,
+          data: { message: 'Error al crear el usuario' },
+          panelClass: ['snackbar-error'],
+        });
+        setTimeout(() => {
+          this.showErrorAlert = false;
+        }, 3000);
+      },
+      complete: () => {
+        console.log('Creating user complete');
+      },
+    });
   }
 
   private mapToUserRequest(formValue: any): UserRequest {
