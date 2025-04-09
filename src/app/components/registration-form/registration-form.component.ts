@@ -47,6 +47,7 @@ export class RegistrationFormComponent {
   private userService = inject(UserService);
   private snackBar = inject(MatSnackBar);
   private router = inject(Router);
+
   formGroup = new FormGroup(
     {
       name: new FormControl<string>(''),
@@ -64,7 +65,6 @@ export class RegistrationFormComponent {
     this.userService.save(user).subscribe({
       next: (res) => {
         if (res.status === 201) {
-          console.log('User created successfully');
           this.showEmailAlert = true;
           this.snackBar.openFromComponent(AlertComponent, {
             duration: 3000,
@@ -77,28 +77,47 @@ export class RegistrationFormComponent {
             this.showEmailAlert = false;
             this.formGroup.reset();
           }, 3000);
-        } else {
-          this.showErrorAlert = true;
-          this.snackBar.openFromComponent(AlertComponent, {
-            duration: 3000,
-            data: { message: 'Error al crear el usuario' },
-            panelClass: ['snackbar-error'],
-          });
-          setTimeout(() => {
-            this.showErrorAlert = false;
-          }, 3000);
         }
       },
       error: (err) => {
-        this.showErrorAlert = true;
-        this.snackBar.openFromComponent(AlertComponent, {
-          duration: 3000,
-          data: { message: 'Error al crear el usuario' },
-          panelClass: ['snackbar-error'],
-        });
-        setTimeout(() => {
-          this.showErrorAlert = false;
-        }, 3000);
+        switch (err.status) {
+          case 409:
+            this.showErrorAlert = true;
+            this.snackBar.openFromComponent(AlertComponent, {
+              duration: 3000,
+              data: { message: 'El correo electrónico ya está registrado' },
+              panelClass: ['snackbar-error'],
+            });
+            setTimeout(() => {
+              this.showErrorAlert = false;
+            }, 3000);
+            break;
+          case 429:
+            this.showErrorAlert = true;
+            this.snackBar.openFromComponent(AlertComponent, {
+              duration: 3000,
+              data: {
+                message:
+                  'Demasiados intentos, debe esperar 5 minutos para ingresar el mismo correo',
+              },
+              panelClass: ['snackbar-error'],
+            });
+            setTimeout(() => {
+              this.showErrorAlert = false;
+            }, 3000);
+            break;
+          default:
+            this.showErrorAlert = true;
+            this.snackBar.openFromComponent(AlertComponent, {
+              duration: 3000,
+              data: { message: 'Error al crear el usuario' },
+              panelClass: ['snackbar-error'],
+            });
+            setTimeout(() => {
+              this.showErrorAlert = false;
+            }, 3000);
+            break;
+        }
       },
       complete: () => {
         console.log('Creating user complete');
