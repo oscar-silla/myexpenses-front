@@ -6,6 +6,9 @@ import { LITERALS } from '../../constants/literals';
 import { MatButton } from '@angular/material/button';
 import { UserService } from '../../services/user/user.service';
 import { ActivateUserRequest } from '../../types/models/request/user/user-activate.-request.type';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { Router } from '@angular/router';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -18,26 +21,37 @@ import { ActivateUserRequest } from '../../types/models/request/user/user-activa
 export class VerificationFormComponent {
   literals = LITERALS;
   private userService = inject(UserService);
+  private snackBar = inject(MatSnackBar);
+  private router = inject(Router);
   formGroup = new FormGroup({
     code: new FormControl<string>(''),
   });
 
   onSubmit() {
-    this.userService
-      .activate(this.mapToActivateUserRequest(this.formGroup.value))
-      .subscribe({
-        next: (res) => {
-          if (res.status === 200) {
-            console.log('User activated successfully');
-          }
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => {
-          console.log('Activating user complete');
-        },
-      });
+    const request = this.mapToActivateUserRequest(this.formGroup.value);
+    request.email = this.userService.getEmail();
+    this.userService.activate(request).subscribe({
+      next: (res) => {
+        if (res.status === 200) {
+          this.snackBar.openFromComponent(AlertComponent, {
+            duration: 3000,
+            data: { message: 'Usuario validado correctamente' },
+            panelClass: ['snackbar-success'],
+          });
+          this.router.navigate(['/login']);
+        }
+      },
+      error: () => {
+        this.snackBar.openFromComponent(AlertComponent, {
+          duration: 3000,
+          data: { message: 'El código no es correcto' },
+          panelClass: ['snackbar-success'],
+        });
+      },
+      complete: () => {
+        console.log('Activating user complete');
+      },
+    });
   }
 
   private mapToActivateUserRequest(formValue: any): ActivateUserRequest {
