@@ -1,4 +1,10 @@
-import { Component, signal, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,6 +30,7 @@ import { AuthCredentials } from '../../types/models/request/auth/auth-credential
   styleUrl: './login-form.component.css',
 })
 export class LoginFormComponent {
+  @Output() private switchToRegister = new EventEmitter<void>();
   hide = signal(true);
   literals = LITERALS;
   formGroup = new FormGroup({
@@ -59,5 +66,10 @@ export class LoginFormComponent {
       email: formGroup.get('email')?.value,
       password: formGroup.get('password')?.value,
     };
+  }
+
+  protected onClickRegister(event: Event) {
+    event.preventDefault();
+    this.switchToRegister.emit();
   }
 }

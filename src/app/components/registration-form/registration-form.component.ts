@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -41,6 +47,7 @@ import { Router } from '@angular/router';
   styleUrl: './registration-form.component.css',
 })
 export class RegistrationFormComponent {
+  @Output() switchToLogin = new EventEmitter<void>();
   literals = LITERALS;
   showEmailAlert: boolean = false;
   showErrorAlert: boolean = false;
@@ -142,4 +149,9 @@ export class RegistrationFormComponent {
       return password === confirmPassword ? null : { passwordsDontMatch: true };
     };
   }
+
+  protected onLoginClick = (e: Event): void => {
+    e.preventDefault();
+    this.switchToLogin.emit();
+  };
 }
