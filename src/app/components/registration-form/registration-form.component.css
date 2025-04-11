@@ -28,4 +28,5 @@ mat-form-field {
 .center {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
