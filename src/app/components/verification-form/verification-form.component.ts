@@ -9,6 +9,7 @@ import { ActivateUserRequest } from '../../types/models/request/user/user-activa
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { Router } from '@angular/router';
+import { SecureStorageService } from '../../services/storage/secure-storage.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -23,6 +24,7 @@ export class VerificationFormComponent {
   private userService = inject(UserService);
   private snackBar = inject(MatSnackBar);
   private router = inject(Router);
+  private secureStorageService = inject(SecureStorageService);
   formGroup = new FormGroup({
     code: new FormControl<string>(''),
   });
@@ -38,7 +40,8 @@ export class VerificationFormComponent {
             data: { message: 'Usuario validado correctamente' },
             panelClass: ['snackbar-success'],
           });
-          this.router.navigate(['/login']);
+          this.secureStorageService.setItem('token', res.body.token);
+          this.router.navigate(['/inicio']);
         }
       },
       error: () => {

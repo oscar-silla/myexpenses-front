@@ -5,6 +5,7 @@
     height: 80vh;
     position: relative;
     width: 100%;
+    overflow-x: hidden;
 }
 
 .animate__animated {

@@ -1,16 +1,18 @@
 import { CanActivate } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { SecureStorageService } from '../services/storage/secure-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  private router = inject(Router);
+  private secureStorageService = inject(SecureStorageService);
 
-  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-    const token = localStorage.getItem('token');
+  async canActivate(): Promise<boolean> {
+    const token = await this.secureStorageService.getItem('token');
 
     if (!token) {
       const currentRoute = this.router.url;
