@@ -48,6 +48,7 @@ import { Router } from '@angular/router';
 })
 export class RegistrationFormComponent {
   @Output() switchToLogin = new EventEmitter<void>();
+  @Output() switchToVerification = new EventEmitter<void>();
   literals = LITERALS;
   showEmailAlert: boolean = false;
   showErrorAlert: boolean = false;
@@ -79,7 +80,7 @@ export class RegistrationFormComponent {
             panelClass: ['snackbar-success'],
           });
           this.userService.setEmail(user.email);
-          this.router.navigate(['/verificacion']);
+          this.switchToVerification.emit();
           setTimeout(() => {
             this.showEmailAlert = false;
             this.formGroup.reset();

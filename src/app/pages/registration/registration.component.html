@@ -1,9 +1,13 @@
 <div class="auth-container">
-    <div *ngIf="!isLoginMode" [ngClass]="{'animate__animated': true, 'animate__fadeInDown': !isLoginMode, 'animate__fadeOutUp': isLoginMode}" >
-        <app-registration-form (switchToLogin)="toggleLoginMode()"></app-registration-form>
+    <div *ngIf="!isLoginMode && !isVerificationMode" [ngClass]="{'animate__animated': true, 'animate__fadeInDown': !isLoginMode, 'animate__fadeOutUp': isLoginMode}" >
+        <app-registration-form (switchToLogin)="toggleLoginMode()" (switchToVerification)="toggleVerificationMode()"></app-registration-form>
     </div>
-    
-    <div *ngIf="isLoginMode" [ngClass]="{'animate__animated': true, 'animate__fadeInDown': isLoginMode, 'animate__fadeOutUp': !isLoginMode}">
+
+    <div *ngIf="isVerificationMode" [ngClass]="{'animate__animated': true, 'animate__fadeInRight': isVerificationMode, 'animate__fadeOutRight': !isVerificationMode}">
+        <app-verification-form></app-verification-form>
+    </div>
+
+    <div *ngIf="isLoginMode && !isVerificationMode" [ngClass]="{'animate__animated': true, 'animate__fadeInDown': isLoginMode, 'animate__fadeOutUp': !isLoginMode}">
         <app-login-form (switchToRegister)="toggleLoginMode()"></app-login-form>
     </div>
 </div>

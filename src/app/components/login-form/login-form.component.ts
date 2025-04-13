@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Output,
   signal,
   ViewEncapsulation,
@@ -13,6 +14,8 @@ import { LITERALS } from '../../constants/literals';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { AuthService } from '../../services/auth/auth.service';
 import { AuthCredentials } from '../../types/models/request/auth/auth-credentials.type';
+import { SecureStorageService } from '../../services/storage/secure-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -31,6 +34,8 @@ import { AuthCredentials } from '../../types/models/request/auth/auth-credential
 })
 export class LoginFormComponent {
   @Output() private switchToRegister = new EventEmitter<void>();
+  private secureStorageService = inject(SecureStorageService);
+  private router = inject(Router);
   hide = signal(true);
   literals = LITERALS;
   formGroup = new FormGroup({
@@ -49,8 +54,9 @@ export class LoginFormComponent {
     this.authService
       .login(this.mapToAuthCredentials(this.formGroup))
       .subscribe({
-        next: (token) => {
-          console.log('Token', token);
+        next: (res) => {
+          this.secureStorageService.setItem('token', res.token);
+          this.router.navigate(['/inicio']);
         },
         error: (err) => {
           console.log('Error logging in', err);
