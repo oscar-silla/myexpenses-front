@@ -34,6 +34,7 @@ import { Router } from '@angular/router';
 })
 export class LoginFormComponent {
   @Output() private switchToRegister = new EventEmitter<void>();
+  @Output() switchToVerification = new EventEmitter<void>();
   private secureStorageService = inject(SecureStorageService);
   private router = inject(Router);
   hide = signal(true);
@@ -59,7 +60,14 @@ export class LoginFormComponent {
           this.router.navigate(['/inicio']);
         },
         error: (err) => {
-          console.log('Error logging in', err);
+          switch (err.status) {
+            case 401:
+              this.switchToVerification.emit();
+            break;
+            default:
+              console.log('Error logging in', err);
+            break;
+          }
         },
         complete: () => {
           console.log('Logging in complete');
