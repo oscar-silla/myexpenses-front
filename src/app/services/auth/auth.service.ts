@@ -14,7 +14,13 @@ const url = 'http://localhost:8080/economy/v1';
 export class AuthService implements AuthServiceInterface {
   constructor(private http: HttpClient) {}
 
-  login(credentials: AuthCredentials): Observable<Token> {
+  public login(credentials: AuthCredentials): Observable<Token> {
     return this.http.post<Token>(`${url}/login`, credentials);
+  }
+
+  public resendVerificationCode(
+    credentials: AuthCredentials
+  ): Observable<void> {
+    return this.http.post<void>(`${url}/resend-verification-code`, credentials);
   }
 }
