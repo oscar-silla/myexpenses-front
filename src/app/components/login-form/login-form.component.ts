@@ -16,6 +16,9 @@ import { AuthService } from '../../services/auth/auth.service';
 import { AuthCredentials } from '../../types/models/request/auth/auth-credentials.type';
 import { SecureStorageService } from '../../services/storage/secure-storage.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-login-form',
@@ -35,6 +38,7 @@ import { Router } from '@angular/router';
 export class LoginFormComponent {
   @Output() private switchToRegister = new EventEmitter<void>();
   @Output() switchToVerification = new EventEmitter<void>();
+  private snackBar = inject(MatSnackBar);
   private secureStorageService = inject(SecureStorageService);
   private router = inject(Router);
   hide = signal(true);
@@ -44,7 +48,10 @@ export class LoginFormComponent {
     password: new FormControl<string>(''),
   });
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -52,27 +59,46 @@ export class LoginFormComponent {
   }
 
   onSubmit() {
-    this.authService
-      .login(this.mapToAuthCredentials(this.formGroup))
-      .subscribe({
-        next: (res) => {
-          this.secureStorageService.setItem('token', res.token);
-          this.router.navigate(['/inicio']);
-        },
-        error: (err) => {
-          switch (err.status) {
-            case 401:
-              this.switchToVerification.emit();
+    const credentials: AuthCredentials = this.mapToAuthCredentials(
+      this.formGroup
+    );
+    this.authService.login(credentials).subscribe({
+      next: (res) => {
+        this.secureStorageService.setItem('token', res.token);
+        this.router.navigate(['/inicio']);
+      },
+      error: (err) => {
+        switch (err.status) {
+          case 401:
+            this.authService.resendVerificationCode(credentials).subscribe({
+              next: () => {
+                this.userService.setEmail(credentials.email);
+                this.switchToVerification.emit();
+                this.snackBar.openFromComponent(AlertComponent, {
+                  duration: 3000,
+                  data: {
+                    message: 'Se ha enviado un correo de confirmación',
+                  },
+                  panelClass: ['snackbar-success'],
+                });
+              },
+              error: (err) => {
+                console.log('Error resending verification code', err);
+              },
+              complete: () => {
+                console.log('Resending verification code complete');
+              },
+            });
             break;
-            default:
-              console.log('Error logging in', err);
+          default:
+            console.log('Error logging in', err);
             break;
-          }
-        },
-        complete: () => {
-          console.log('Logging in complete');
-        },
-      });
+        }
+      },
+      complete: () => {
+        console.log('Logging in complete');
+      },
+    });
   }
 
   private mapToAuthCredentials(formGroup: FormGroup): AuthCredentials {
