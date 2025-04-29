@@ -1,53 +1,85 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { from, map, Observable, switchMap } from 'rxjs';
 import { TransactionDateResponse } from '../../types/models/response/transaction-date/transaction-date-response.type';
 import { TransactionServicePort } from '../../interfaces/transaction-service.interface';
 import { TransactionRequest } from '../../types/models/request/transaction/transaction-request.type';
 import { TransactionResponse } from '../../types/models/response/transaction/transaction-response.type';
 import { TransactionQueryParams } from '../../types/models/request/transaction/transaction-queryparams.type';
+import { SecureStorageService } from '../storage/secure-storage.service';
+import { HttpHeaders } from '@capacitor/core';
 
-const url = 'https://myexpenses-production.up.railway.app/economy/v1';
-//const url = 'http://localhost:8080/economy/v1';
+//const url = 'https://myexpenses-production.up.railway.app/economy/v1';
+const url = 'http://localhost:8080/economy/v1';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService implements TransactionServicePort {
+  private http: HttpClient = inject(HttpClient);
+  private storage: SecureStorageService = inject(SecureStorageService);
   private baseUrl: string = url;
-  constructor(private http: HttpClient) {}
 
-  getTransaction(id: string): Observable<TransactionResponse> {
-    return this.http.get<TransactionResponse>(
-      `${this.baseUrl}/transactions/${id}`
+  private getHeaders(): Observable<{ headers: HttpHeaders }> {
+    return from(this.storage.getItem('token')).pipe(
+      map((token) => ({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }))
+    );
+  }
+
+  public getTransaction(id: string): Observable<TransactionResponse> {
+    return this.getHeaders().pipe(
+      switchMap((headers) =>
+        this.http.get<TransactionResponse>(
+          `${this.baseUrl}/transactions/${id}`,
+          headers
+        )
+      )
     );
   }
 
   public getTransactions(): Observable<TransactionDateResponse> {
-    return this.http.get<TransactionDateResponse>(
-      `${this.baseUrl}/transactions`
+    return this.getHeaders().pipe(
+      switchMap((headers) =>
+        this.http.get<TransactionDateResponse>(
+          `${this.baseUrl}/transactions`,
+          headers
+        )
+      )
     );
   }
 
   public save(body: TransactionRequest): Observable<Object> {
-    return this.http.post<Object>(`${this.baseUrl}/transactions`, body);
+    return this.getHeaders().pipe(
+      switchMap((headers) =>
+        this.http.post<Object>(`${this.baseUrl}/transactions`, body, headers)
+      )
+    );
   }
 
-  modify(
+  public modify(
     id: string,
     expense: TransactionRequest,
     queryParams?: TransactionQueryParams
   ): Observable<Object> {
-    return this.http.patch<Object>(
-      `${this.baseUrl}/transactions/${id}`,
-      expense,
-      { params: queryParams }
+    return this.getHeaders().pipe(
+      switchMap((headers) =>
+        this.http.patch<Object>(`${this.baseUrl}/transactions/${id}`, expense, {
+          params: queryParams,
+          ...headers,
+        })
+      )
     );
   }
 
-  delete(id: string): Observable<Object> {
-    return this.http.delete<TransactionResponse>(
-      `${this.baseUrl}/transactions/${id}`
+  public delete(id: string): Observable<Object> {
+    return this.getHeaders().pipe(
+      switchMap((headers) =>
+        this.http.delete<Object>(`${this.baseUrl}/transactions/${id}`, headers)
+      )
     );
   }
 }
