@@ -4,4 +4,5 @@ import { Token } from '../types/models/response/auth/token.type';
 
 export interface AuthServiceInterface {
   login(credentials: AuthCredentials): Observable<Token>;
+  logout(): void;
 }
