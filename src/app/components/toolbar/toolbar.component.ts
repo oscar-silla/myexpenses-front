@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -7,9 +7,10 @@ import { filter } from 'rxjs';
 import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 import { LITERALS } from '../../constants/literals';
 import { Location } from '@angular/common';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatNavList, MatListItem } from '@angular/material/list';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -32,11 +33,10 @@ export class ToolbarComponent implements OnInit {
   currentRoute: string = '';
   showMenu: boolean = false;
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private location: Location
-  ) {}
+  private router: Router = inject(Router);
+  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  private location: Location = inject(Location);
+  private authService: AuthService = inject(AuthService);
 
   ngOnInit(): void {
     this.router.events
@@ -70,5 +70,10 @@ export class ToolbarComponent implements OnInit {
       this.currentRoute !== this.literals.routes.registration &&
       this.currentRoute !== this.literals.routes.login
     );
+  }
+
+  protected logout(sidenav: MatSidenav): void {
+    sidenav.close();
+    this.authService.logout();
   }
 }

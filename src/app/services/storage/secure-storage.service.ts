@@ -7,20 +7,20 @@ import { Preferences } from '@capacitor/preferences';
 export class SecureStorageService {
   constructor() {}
 
-  async setItem(key: string, value: string) {
+  async setItem(key: string, value: string): Promise<void> {
     await Preferences.set({ key, value });
   }
 
-  async getItem(key: string) {
+  async getItem(key: string): Promise<string | null> {
     const { value } = await Preferences.get({ key });
     return value;
   }
 
-  async removeItem(key: string) {
+  async removeItem(key: string): Promise<void> {
     await Preferences.remove({ key });
   }
 
-  async clear() {
+  async clear(): Promise<void> {
     await Preferences.clear();
   }
 }

@@ -63,8 +63,8 @@ export class LoginFormComponent {
       this.formGroup
     );
     this.authService.login(credentials).subscribe({
-      next: (res) => {
-        this.secureStorageService.setItem('token', res.token);
+      next: async (res) => {
+        await this.secureStorageService.setItem('token', res.token);
         this.router.navigate(['/inicio']);
       },
       error: (err) => {
