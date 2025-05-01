@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { UserService } from '../../services/user/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-form',
@@ -67,28 +68,41 @@ export class LoginFormComponent {
         await this.secureStorageService.setItem('token', res.token);
         this.router.navigate(['/inicio']);
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         switch (err.status) {
           case 401:
-            this.authService.resendVerificationCode(credentials).subscribe({
-              next: () => {
-                this.userService.setEmail(credentials.email);
-                this.switchToVerification.emit();
+            switch (err.error.message) {
+              case 'Bad credentials':
                 this.snackBar.openFromComponent(AlertComponent, {
                   duration: 3000,
                   data: {
-                    message: 'Se ha enviado un correo de confirmación',
+                    message: 'Credenciales incorrectas',
                   },
                   panelClass: ['snackbar-success'],
                 });
-              },
-              error: (err) => {
-                console.log('Error resending verification code', err);
-              },
-              complete: () => {
-                console.log('Resending verification code complete');
-              },
-            });
+                break;
+              default:
+                this.authService.resendVerificationCode(credentials).subscribe({
+                  next: () => {
+                    this.userService.setEmail(credentials.email);
+                    this.switchToVerification.emit();
+                    this.snackBar.openFromComponent(AlertComponent, {
+                      duration: 3000,
+                      data: {
+                        message: 'Se ha enviado un correo de confirmación',
+                      },
+                      panelClass: ['snackbar-success'],
+                    });
+                  },
+                  error: (err) => {
+                    console.log('Error resending verification code', err);
+                  },
+                  complete: () => {
+                    console.log('Resending verification code complete');
+                  },
+                });
+                break;
+            }
             break;
           default:
             console.log('Error logging in', err);
