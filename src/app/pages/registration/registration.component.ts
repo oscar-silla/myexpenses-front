@@ -18,7 +18,7 @@ import { VerificationFormComponent } from '../../components/verification-form/ve
   styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
-  protected isLoginMode: boolean = false;
+  protected isLoginMode: boolean = true;
   protected isVerificationMode: boolean = false;
 
   protected toggleLoginMode() {

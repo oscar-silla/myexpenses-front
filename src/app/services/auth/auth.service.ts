@@ -20,7 +20,7 @@ export class AuthService implements AuthServiceInterface {
 
   logout(): void {
     this.storage.removeItem('token');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/registro']);
   }
 
   public login(credentials: AuthCredentials): Observable<Token> {

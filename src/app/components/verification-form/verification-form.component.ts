@@ -33,14 +33,14 @@ export class VerificationFormComponent {
     const request = this.mapToActivateUserRequest(this.formGroup.value);
     request.email = this.userService.getEmail();
     this.userService.activate(request).subscribe({
-      next: (res) => {
+      next: async (res) => {
         if (res.status === 200) {
           this.snackBar.openFromComponent(AlertComponent, {
             duration: 3000,
             data: { message: 'Usuario validado correctamente' },
             panelClass: ['snackbar-success'],
           });
-          this.secureStorageService.setItem('token', res.body.token);
+          await this.secureStorageService.setItem('token', res.body.token);
           this.router.navigate(['/inicio']);
         }
       },
