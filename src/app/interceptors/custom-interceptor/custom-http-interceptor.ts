@@ -20,7 +20,6 @@ export class CustomHttpInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 401) {
-          console.log('hola');
           if (req.url.includes('/economy/v1/transactions')) {
             this.authService.logout();
           }
