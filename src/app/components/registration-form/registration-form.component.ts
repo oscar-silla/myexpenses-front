@@ -26,7 +26,6 @@ import { UserRequest } from '../../types/models/request/user/user-request.type';
 import { UserService } from '../../services/user/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from '../shared/alert/alert.component';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration-form',
@@ -54,7 +53,6 @@ export class RegistrationFormComponent {
   showErrorAlert: boolean = false;
   private userService = inject(UserService);
   private snackBar = inject(MatSnackBar);
-  private router = inject(Router);
 
   formGroup = new FormGroup(
     {

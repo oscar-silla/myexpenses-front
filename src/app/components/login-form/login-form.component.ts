@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { UserService } from '../../services/user/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-login-form',
@@ -32,6 +33,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     ReactiveFormsModule,
     MatButton,
     MatIconButton,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
@@ -42,6 +44,7 @@ export class LoginFormComponent {
   private snackBar = inject(MatSnackBar);
   private secureStorageService = inject(SecureStorageService);
   private router = inject(Router);
+  protected isLoading = signal(false);
   hide = signal(true);
   literals = LITERALS;
   formGroup = new FormGroup({
@@ -60,12 +63,14 @@ export class LoginFormComponent {
   }
 
   onSubmit() {
+    this.isLoading.set(true);
     const credentials: AuthCredentials = this.mapToAuthCredentials(
       this.formGroup
     );
     this.authService.login(credentials).subscribe({
       next: async (res) => {
         await this.secureStorageService.setItem('token', res.token);
+        this.isLoading.set(false);
         this.router.navigate(['/inicio']);
       },
       error: (err: HttpErrorResponse) => {
@@ -103,6 +108,15 @@ export class LoginFormComponent {
                 });
                 break;
             }
+            break;
+          case 404:
+            this.snackBar.openFromComponent(AlertComponent, {
+              duration: 3000,
+              data: {
+                message: 'Usuario no encontrado',
+              },
+              panelClass: ['snackbar-success'],
+            });
             break;
           default:
             console.log('Error logging in', err);
