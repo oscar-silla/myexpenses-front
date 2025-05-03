@@ -4,6 +4,7 @@ import {
   EventEmitter,
   inject,
   Output,
+  signal,
   ViewEncapsulation,
 } from '@angular/core';
 import {
@@ -49,8 +50,9 @@ export class RegistrationFormComponent {
   @Output() switchToLogin = new EventEmitter<void>();
   @Output() switchToVerification = new EventEmitter<void>();
   literals = LITERALS;
-  showEmailAlert: boolean = false;
-  showErrorAlert: boolean = false;
+  protected showEmailAlert = signal(false);
+  protected showErrorAlert = signal(false);
+  protected showSpinner = signal(false);
   private userService = inject(UserService);
   private snackBar = inject(MatSnackBar);
 
@@ -68,10 +70,12 @@ export class RegistrationFormComponent {
 
   protected onSubmit() {
     const user: UserRequest = this.mapToUserRequest(this.formGroup.value);
+    this.showSpinner.set(true);
     this.userService.save(user).subscribe({
       next: (res) => {
         if (res.status === 201) {
-          this.showEmailAlert = true;
+          this.showSpinner.set(false);
+          this.showEmailAlert.set(true);
           this.snackBar.openFromComponent(AlertComponent, {
             duration: 3000,
             data: { message: 'Se ha enviado un correo de confirmación' },
@@ -79,27 +83,29 @@ export class RegistrationFormComponent {
           });
           this.userService.setEmail(user.email);
           this.switchToVerification.emit();
+          this.showSpinner.set(false);
           setTimeout(() => {
-            this.showEmailAlert = false;
+            this.showEmailAlert.set(false);
             this.formGroup.reset();
           }, 3000);
         }
       },
       error: (err) => {
+        this.showSpinner.set(false);
         switch (err.status) {
           case 409:
-            this.showErrorAlert = true;
+            this.showErrorAlert.set(true);
             this.snackBar.openFromComponent(AlertComponent, {
               duration: 3000,
               data: { message: 'El correo electrónico ya está registrado' },
               panelClass: ['snackbar-error'],
             });
             setTimeout(() => {
-              this.showErrorAlert = false;
+              this.showErrorAlert.set(false);
             }, 3000);
             break;
           case 429:
-            this.showErrorAlert = true;
+            this.showErrorAlert.set(true);
             this.snackBar.openFromComponent(AlertComponent, {
               duration: 3000,
               data: {
@@ -109,18 +115,18 @@ export class RegistrationFormComponent {
               panelClass: ['snackbar-error'],
             });
             setTimeout(() => {
-              this.showErrorAlert = false;
+              this.showErrorAlert.set(false);
             }, 3000);
             break;
           default:
-            this.showErrorAlert = true;
+            this.showErrorAlert.set(true);
             this.snackBar.openFromComponent(AlertComponent, {
               duration: 3000,
               data: { message: 'Error al crear el usuario' },
               panelClass: ['snackbar-error'],
             });
             setTimeout(() => {
-              this.showErrorAlert = false;
+              this.showErrorAlert.set(false);
             }, 3000);
             break;
         }

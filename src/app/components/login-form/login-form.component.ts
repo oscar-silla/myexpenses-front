@@ -39,8 +39,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './login-form.component.css',
 })
 export class LoginFormComponent {
-  @Output() private switchToRegister = new EventEmitter<void>();
-  @Output() switchToVerification = new EventEmitter<void>();
+  @Output() protected switchToRegister = new EventEmitter<void>();
+  @Output() protected switchToVerification = new EventEmitter<void>();
   private snackBar = inject(MatSnackBar);
   private secureStorageService = inject(SecureStorageService);
   private router = inject(Router);
@@ -85,6 +85,7 @@ export class LoginFormComponent {
                   },
                   panelClass: ['snackbar-success'],
                 });
+                this.isLoading.set(false);
                 break;
               default:
                 this.authService.resendVerificationCode(credentials).subscribe({
@@ -98,12 +99,15 @@ export class LoginFormComponent {
                       },
                       panelClass: ['snackbar-success'],
                     });
+                    this.isLoading.set(false);
                   },
                   error: (err) => {
                     console.log('Error resending verification code', err);
+                    this.isLoading.set(false);
                   },
                   complete: () => {
                     console.log('Resending verification code complete');
+                    this.isLoading.set(false);
                   },
                 });
                 break;
