@@ -1,4 +1,4 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,12 +10,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { Router } from '@angular/router';
 import { SecureStorageService } from '../../services/storage/secure-storage.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'app-verification-form',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButton],
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButton,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './verification-form.component.html',
   styleUrl: './verification-form.component.css',
 })
@@ -28,8 +35,10 @@ export class VerificationFormComponent {
   formGroup = new FormGroup({
     code: new FormControl<string>(''),
   });
+  protected showSpinner = signal(false);
 
   onSubmit() {
+    this.showSpinner.set(true);
     const request = this.mapToActivateUserRequest(this.formGroup.value);
     request.email = this.userService.getEmail();
     this.userService.activate(request).subscribe({
@@ -42,6 +51,7 @@ export class VerificationFormComponent {
           });
           await this.secureStorageService.setItem('token', res.body.token);
           this.router.navigate(['/inicio']);
+          this.showSpinner.set(false);
         }
       },
       error: () => {
@@ -50,6 +60,7 @@ export class VerificationFormComponent {
           data: { message: 'El código no es correcto' },
           panelClass: ['snackbar-success'],
         });
+        this.showSpinner.set(false);
       },
       complete: () => {
         console.log('Activating user complete');

@@ -1,35 +1,41 @@
-<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
-        <mat-label>{{literals.name}}</mat-label>
-        <input required matInput type="text" formControlName="name" />
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>{{literals.firstSurname}}</mat-label>
-        <input required matInput type="text" formControlName="firstSurname" />
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>{{literals.secondSurname}}</mat-label>
-        <input matInput type="text" formControlName="secondSurname" />
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>{{literals.email}}</mat-label>
-        <input required matInput type="email" formControlName="email" />
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>{{literals.password}}</mat-label>
-        <input required matInput type="password" formControlName="password" />
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>{{literals.confirmPassword}}</mat-label>
-        <input required matInput type="password" formControlName="confirmPassword" />
-    </mat-form-field>
-    <div class="center">
-        <button mat-button type="submit" [disabled]="!formGroup.valid">
-            {{literals.save}}
-        </button>
+@if (showSpinner()) {
+    <div class="mid-center">
+        <mat-spinner></mat-spinner>
     </div>
-    <p class="center">
-        ¿Ya tienes cuenta?
-        <button mat-button (click)="onLoginClick($event)">Inicia sesión</button>
-    </p>
-</form>
+} @else {
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <mat-label>{{literals.name}}</mat-label>
+            <input required matInput type="text" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>{{literals.firstSurname}}</mat-label>
+            <input required matInput type="text" formControlName="firstSurname" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>{{literals.secondSurname}}</mat-label>
+            <input matInput type="text" formControlName="secondSurname" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>{{literals.email}}</mat-label>
+            <input required matInput type="email" formControlName="email" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>{{literals.password}}</mat-label>
+            <input required matInput type="password" formControlName="password" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>{{literals.confirmPassword}}</mat-label>
+            <input required matInput type="password" formControlName="confirmPassword" />
+        </mat-form-field>
+        <div class="center">
+            <button mat-button type="submit" [disabled]="!formGroup.valid">
+                {{literals.save}}
+            </button>
+        </div>
+        <p class="center">
+            ¿Ya tienes cuenta?
+            <button mat-button (click)="onLoginClick($event)">Inicia sesión</button>
+        </p>
+    </form>
+}
