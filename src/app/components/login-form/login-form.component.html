@@ -1,3 +1,8 @@
+@if (this.isLoading()) {
+  <div class="mid-center">
+    <mat-spinner></mat-spinner>
+  </div>
+} @else {
 <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="fill">
         <mat-label>{{literals.email}}</mat-label>
@@ -26,3 +31,4 @@
         <button mat-button (click)="onClickRegister($event)">Regístrate</button>
     </p>
 </form>
+}
