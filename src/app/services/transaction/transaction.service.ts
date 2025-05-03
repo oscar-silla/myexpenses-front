@@ -9,8 +9,8 @@ import { TransactionQueryParams } from '../../types/models/request/transaction/t
 import { SecureStorageService } from '../storage/secure-storage.service';
 import { HttpHeaders } from '@capacitor/core';
 
-//const url = 'https://myexpenses-production.up.railway.app/economy/v1';
-const url = 'http://localhost:8080/economy/v1';
+const url = 'https://myexpenses-production.up.railway.app/economy/v1';
+//const url = 'http://localhost:8080/economy/v1';
 
 @Injectable({
   providedIn: 'root',

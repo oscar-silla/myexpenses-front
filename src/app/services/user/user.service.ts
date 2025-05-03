@@ -5,8 +5,8 @@ import { UserServicePort } from '../../interfaces/user-service.interface';
 import { UserRequest } from '../../types/models/request/user/user-request.type';
 import { ActivateUserRequest } from '../../types/models/request/user/user-activate.-request.type';
 
-//const url = 'https://myexpenses-production.up.railway.app/economy/v1';
-const url = 'http://localhost:8080/economy/v1';
+const url = 'https://myexpenses-production.up.railway.app/economy/v1';
+//const url = 'http://localhost:8080/economy/v1';
 
 @Injectable({
   providedIn: 'root',
