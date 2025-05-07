@@ -8,9 +8,65 @@
     overflow-x: hidden;
 }
 
-.animate__animated {
+.input-form {
     padding: 20px;
     border-radius: 10px;
     width: 100%;
     max-width: 400px; 
 }
+
+@keyframes fadeInDownCustom {
+    from {
+      opacity: 0;
+      transform: translate3d(0, -50px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .fade-in-down {
+    animation: fadeInDownCustom 0.7s both;
+  }
+  
+  @keyframes fadeOutUpCustom {
+    from {
+      opacity: 1;
+      transform: none;
+    }
+    to {
+      opacity: 0;
+      transform: translate3d(0, -50px, 0);
+    }
+  }
+  .fade-out-up {
+    animation: fadeOutUpCustom 0.7s both;
+  }
+  
+  @keyframes fadeInRightCustom {
+    from {
+      opacity: 0;
+      transform: translate3d(50px, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .fade-in-right {
+    animation: fadeInRightCustom 0.7s both;
+  }
+  
+  @keyframes fadeOutRightCustom {
+    from {
+      opacity: 1;
+      transform: none;
+    }
+    to {
+      opacity: 0;
+      transform: translate3d(50px, 0, 0);
+    }
+  }
+  .fade-out-right {
+    animation: fadeOutRightCustom 0.7s both;
+  }
