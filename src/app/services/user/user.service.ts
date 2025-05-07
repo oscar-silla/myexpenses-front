@@ -4,15 +4,13 @@ import { Observable } from 'rxjs';
 import { UserServicePort } from '../../interfaces/user-service.interface';
 import { UserRequest } from '../../types/models/request/user/user-request.type';
 import { ActivateUserRequest } from '../../types/models/request/user/user-activate.-request.type';
-
-const url = 'https://myexpenses-production.up.railway.app/economy/v1';
-//const url = 'http://localhost:8080/economy/v1';
+import { BASE_URL } from '../../../utils/app-constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService implements UserServicePort {
-  private baseUrl: string = url;
+  private baseUrl: string = BASE_URL;
   private email: string = '';
   constructor(private http: HttpClient) {}
 

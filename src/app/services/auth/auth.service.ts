@@ -6,14 +6,13 @@ import { Token } from '../../types/models/response/auth/token.type';
 import { HttpClient } from '@angular/common/http';
 import { SecureStorageService } from '../storage/secure-storage.service';
 import { Router } from '@angular/router';
-
-//const url = 'https://myexpenses-production.up.railway.app/economy/v1';
-const url = 'http://localhost:8080/economy/v1';
+import { BASE_URL } from '../../../utils/app-constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements AuthServiceInterface {
+  private baseUrl: string = BASE_URL;
   private http: HttpClient = inject(HttpClient);
   private storage: SecureStorageService = inject(SecureStorageService);
   private router: Router = inject(Router);
@@ -24,12 +23,15 @@ export class AuthService implements AuthServiceInterface {
   }
 
   public login(credentials: AuthCredentials): Observable<Token> {
-    return this.http.post<Token>(`${url}/login`, credentials);
+    return this.http.post<Token>(`${this.baseUrl}/login`, credentials);
   }
 
   public resendVerificationCode(
     credentials: AuthCredentials
   ): Observable<void> {
-    return this.http.post<void>(`${url}/resend-verification-code`, credentials);
+    return this.http.post<void>(
+      `${this.baseUrl}/resend-verification-code`,
+      credentials
+    );
   }
 }
