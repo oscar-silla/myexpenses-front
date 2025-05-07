@@ -8,9 +8,7 @@ import { TransactionResponse } from '../../types/models/response/transaction/tra
 import { TransactionQueryParams } from '../../types/models/request/transaction/transaction-queryparams.type';
 import { SecureStorageService } from '../storage/secure-storage.service';
 import { HttpHeaders } from '@capacitor/core';
-
-const url = 'https://myexpenses-production.up.railway.app/economy/v1';
-//const url = 'http://localhost:8080/economy/v1';
+import { BASE_URL } from '../../../utils/app-constants';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +16,7 @@ const url = 'https://myexpenses-production.up.railway.app/economy/v1';
 export class TransactionService implements TransactionServicePort {
   private http: HttpClient = inject(HttpClient);
   private storage: SecureStorageService = inject(SecureStorageService);
-  private baseUrl: string = url;
+  private baseUrl: string = BASE_URL;
 
   private getHeaders(): Observable<{ headers: HttpHeaders }> {
     return from(this.storage.getItem('token')).pipe(
