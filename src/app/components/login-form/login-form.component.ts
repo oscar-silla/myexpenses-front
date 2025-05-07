@@ -121,6 +121,7 @@ export class LoginFormComponent {
               },
               panelClass: ['snackbar-success'],
             });
+            this.isLoading.set(false);
             break;
           default:
             console.log('Error logging in', err);
