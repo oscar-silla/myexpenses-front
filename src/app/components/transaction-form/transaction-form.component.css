@@ -58,6 +58,15 @@ mat-card.selected {
     justify-content: center;
 }
 
+.bottom {
+    position: fixed;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    padding: 0 16px;
+    z-index: 10;
+}
+
 .right {
     display: flex;
 }
@@ -84,4 +93,74 @@ mat-card.selected {
 
 .mdc-tab__text-label {
     color: #333333 !important;
+}
+
+
+.empty-category-box {
+    display: inline-block;
+    background: #f5f5f5;
+    color: #333333;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.category-box {
+  display: inline-block;
+  background: #f5f5f5;
+  color: #333333;
+  padding: 8px 12px;
+  margin: 0px 5px 7px 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.category-box:hover {
+  background: #e0e0e0;
+}
+
+.category-box.selected {
+  background: linear-gradient(135deg, #007AFF, #0056D2);
+  color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(0.98);
+}
+
+.category-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0px 10px 0px 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
+
+/* Para que el teclado no cubra las categorías */
+.category-container.scrollable {
+  max-height: calc(100vh - 200px);
+}
+
+.crear-category {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #007AFF;
+  cursor: pointer;
+}
+
+.crear-category:hover {
+  text-decoration: underline;
 }

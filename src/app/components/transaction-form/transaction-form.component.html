@@ -17,16 +17,6 @@
     <mat-tab label={{literals.revenue}}></mat-tab>
   </mat-tab-group>
 
-  @for (category of categories; track category) {
-    <div class="div-mat-card">
-      <mat-card 
-        [ngClass]="{'selected': formGroup.controls['category'].value === category}" 
-        (click)="selectCategory(category)">
-        {{ category }}
-      </mat-card>
-    </div>
-  }
-
   <mat-form-field appearance="fill">
     <mat-label>{{literals.amount}}</mat-label>
     <input required matInput type="number" formControlName="amount" />
@@ -39,8 +29,37 @@
     <mat-icon matSuffix>description</mat-icon>
   </mat-form-field>
 
-  <div class="center">
-    <button mat-button type="submit" [disabled]="!formGroup.valid">
+  <mat-form-field appearance="fill">
+    <mat-label>{{literals.category}}</mat-label>
+    <input 
+      matInput 
+      type="text" 
+      formControlName="category" 
+      (input)="this.filterCategories()"
+    />
+    <mat-icon matSuffix>category</mat-icon>
+  </mat-form-field>
+
+  <div class="category-container">
+    @for (category of this.filterCategories(); track category) {
+      <div 
+        class="category-box" 
+        (click)="selectCategory(category)" 
+        [ngClass]="{'selected': formGroup.controls['category'].value === category}"
+      >
+          {{ category }}
+      </div>
+    }
+
+    @if (this.filterCategories().length === 0) {
+      <div class="empty-category-box">
+        <mat-icon matSuffix>add</mat-icon>
+      </div>
+    }
+  </div>
+
+  <div class="center bottom">
+    <button mat-button type="submit" [disabled]="!isValidForm()">
       {{literals.create}}
     </button>
   </div>

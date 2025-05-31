@@ -15,6 +15,7 @@ export const LITERALS = {
   },
   amount: 'Importe',
   description: 'Descripción',
+  category: 'Categoría',
   create: 'Crear',
   saveChanges: 'Guardar cambios',
   delete: 'Borrar',
