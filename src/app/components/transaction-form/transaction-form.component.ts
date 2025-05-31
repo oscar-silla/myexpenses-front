@@ -122,7 +122,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     });
   }
 
-  readonly categories: string[] = [
+  categories: string[] = [
     this.literals.categories.food.toUpperCase(),
     this.literals.categories.home.toUpperCase(),
     this.literals.categories.finances.toUpperCase(),
@@ -229,5 +229,18 @@ export class TransactionFormComponent implements OnInit, OnChanges {
       currentFormValues.category !== this.transaction?.category ||
       currentFormValues.description !== this.transaction?.description
     );
+  }
+
+  protected filterCategories(): string[] {
+    return this.categories.filter((category) =>
+      category
+        .toLowerCase()
+        .includes(this.formGroup.controls['category'].value!.toLowerCase())
+    );
+  }
+
+  protected isValidForm(): boolean {
+    const currentFormValues = this.formGroup.value;
+    return currentFormValues.amount! > 0 && currentFormValues.category! != '';
   }
 }
