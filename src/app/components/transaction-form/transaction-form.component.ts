@@ -200,26 +200,8 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   private mapToTransactionRequest(formValues: FormFields): TransactionRequest {
     return {
       ...formValues,
-      category: this.translateCategory(formValues.category),
       date: new Date(),
     };
-  }
-
-  private translateCategory(category: string): string {
-    switch (category) {
-      case this.literals.categories.food.toUpperCase():
-        return 'FOOD';
-      case this.literals.categories.home.toUpperCase():
-        return 'HOME';
-      case this.literals.categories.finances.toUpperCase():
-        return 'FINANCES';
-      case this.literals.categories.work.toUpperCase():
-        return 'WORK';
-      case this.literals.categories.entertainment.toUpperCase():
-        return 'ENTERTAINMENT';
-      default:
-        return category;
-    }
   }
 
   formValuesChanged(): boolean {
@@ -232,6 +214,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   }
 
   protected filterCategories(): string[] {
+    console.log(this.categories);
     return this.categories.filter((category) =>
       category
         .toLowerCase()
