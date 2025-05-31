@@ -70,27 +70,55 @@
   [formGroup]="formGroup"
   (ngSubmit)="onModify()"
 >
-  @for (category of categories; track category) {
-    <div class="div-mat-card">
-      <mat-card 
-        [ngClass]="{'selected': formGroup.controls['category'].value === category}" 
-        (click)="selectCategory(category)">
+  <mat-tab-group
+  animationDuration="0ms"
+  (selectedIndexChange)="onTransactionTypeChange($event)"
+  selectedIndex={{transactionTypeIndex}}
+  >
+  <mat-tab label={{literals.expense}}></mat-tab>
+  <mat-tab label={{literals.revenue}}></mat-tab>
+  </mat-tab-group>
+
+  <mat-form-field appearance="fill">
+  <mat-label>{{literals.amount}}</mat-label>
+  <input required matInput type="number" formControlName="amount" />
+  <mat-icon matSuffix>paid</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+  <mat-label>{{literals.description}}</mat-label>
+  <input matInput type="text" formControlName="description" />
+  <mat-icon matSuffix>description</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+  <mat-label>{{literals.category}}</mat-label>
+  <input 
+    matInput 
+    type="text" 
+    formControlName="category" 
+    (input)="this.filterCategories()"
+  />
+  <mat-icon matSuffix>category</mat-icon>
+  </mat-form-field>
+
+  <div class="category-container">
+  @for (category of this.filterCategories(); track category) {
+    <div 
+      class="category-box" 
+      (click)="selectCategory(category)" 
+      [ngClass]="{'selected': formGroup.controls['category'].value === category}"
+    >
         {{ category }}
-      </mat-card>
     </div>
   }
 
-  <mat-form-field appearance="fill">
-    <mat-label>{{literals.amount}}</mat-label>
-    <input required matInput type="number" formControlName="amount" />
-    <mat-icon matSuffix>paid</mat-icon>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>{{literals.description}}</mat-label>
-    <input matInput type="text" formControlName="description" />
-    <mat-icon matSuffix>description</mat-icon>
-  </mat-form-field>
+  @if (this.filterCategories().length === 0) {
+    <div class="empty-category-box">
+      <mat-icon matSuffix>add</mat-icon>
+    </div>
+  }
+  </div>
 
   <div class="center">
     <button
