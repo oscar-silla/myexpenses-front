@@ -4,11 +4,10 @@ import { TransactionService } from '../../services/transaction/transaction.servi
 import { TransactionResponse } from '../../types/models/response/transaction/transaction-response.type';
 
 @Component({
-  selector: 'app-transactions',
-  standalone: true,
-  imports: [TransactionFormComponent],
-  templateUrl: './transactions.component.html',
-  styleUrl: './transactions.component.css',
+    selector: 'app-transactions',
+    imports: [TransactionFormComponent],
+    templateUrl: './transactions.component.html',
+    styleUrl: './transactions.component.css'
 })
 export class TransactionsComponent implements OnInit {
   @Input() id = '';

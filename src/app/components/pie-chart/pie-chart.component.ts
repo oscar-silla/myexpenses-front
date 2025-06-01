@@ -1,10 +1,8 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   Input,
   OnChanges,
-  OnDestroy,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -27,7 +25,7 @@ use([
   CanvasRenderer,
 ]);
 
-type CategoryType = { value: number; name: string };
+type CategoryType = { value: number; name: string; color: string };
 
 @Component({
   selector: 'app-pie-chart',
@@ -50,12 +48,16 @@ export class PieChartComponent implements OnChanges {
       .filter((transaction) => transaction.amount > 0)
       .reduce((acc: CategoryType[], transaction) => {
         const existingCategory = acc.find(
-          (cat) => cat.name === transaction.category
+          (cat) => cat.name === transaction.category.name
         );
         if (existingCategory) {
           existingCategory.value += transaction.amount;
         } else {
-          acc.push({ value: transaction.amount, name: transaction.category });
+          acc.push({
+            value: transaction.amount,
+            name: transaction.category.name,
+            color: transaction.category.color,
+          });
         }
         return acc;
       }, [])
@@ -68,9 +70,7 @@ export class PieChartComponent implements OnChanges {
         changes['transactionDates'].currentValue?.length > 0) ||
       (changes['type'] && changes['type'].currentValue)
     ) {
-      this.categories = this.translateCategoryToSpanish(
-        this.collectCategoriesByTransactionType(this.type)
-      );
+      this.categories = this.collectCategoriesByTransactionType(this.type);
     }
     this.updateChart();
   }
@@ -82,19 +82,11 @@ export class PieChartComponent implements OnChanges {
 
     this.chart = init(this.chartContainer.nativeElement);
 
-    const categoryColors: Record<string, string> = {
-      [this.literals.categories.home]: '#FF6384',
-      [this.literals.categories.work]: '#36A2EB',
-      [this.literals.categories.finances]: '#FFCE56',
-      [this.literals.categories.food]: '#4BC0C0',
-      [this.literals.categories.entertainment]: '#4D4DFF',
-    };
-
     let assignedColors = new Map<string, string>();
 
     this.categories.forEach((category) => {
-      if (categoryColors[category.name]) {
-        assignedColors.set(category.name, categoryColors[category.name]);
+      if (category.color) {
+        assignedColors.set(category.name, category.color);
       }
     });
 
@@ -126,26 +118,5 @@ export class PieChartComponent implements OnChanges {
   private removeChart() {
     this.chart.dispose();
     this.chart = null;
-  }
-
-  private translateCategoryToSpanish(
-    categories: CategoryType[]
-  ): CategoryType[] {
-    return categories.map((category) => {
-      switch (category.name.toUpperCase()) {
-        case 'HOME':
-          return { ...category, name: this.literals.categories.home };
-        case 'WORK':
-          return { ...category, name: this.literals.categories.work };
-        case 'FINANCES':
-          return { ...category, name: this.literals.categories.finances };
-        case 'FOOD':
-          return { ...category, name: this.literals.categories.food };
-        case 'ENTERTAINMENT':
-          return { ...category, name: this.literals.categories.entertainment };
-        default:
-          return category;
-      }
-    });
   }
 }

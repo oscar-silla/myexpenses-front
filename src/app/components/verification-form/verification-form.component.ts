@@ -13,18 +13,17 @@ import { SecureStorageService } from '../../services/storage/secure-storage.serv
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  selector: 'app-verification-form',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatButton,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './verification-form.component.html',
-  styleUrl: './verification-form.component.css',
+    encapsulation: ViewEncapsulation.None,
+    selector: 'app-verification-form',
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatButton,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './verification-form.component.html',
+    styleUrl: './verification-form.component.css'
 })
 export class VerificationFormComponent {
   literals = LITERALS;

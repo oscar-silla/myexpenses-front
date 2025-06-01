@@ -24,6 +24,8 @@ import { DialogComponent } from '../shared/dialog/dialog.component';
 import { TransactionQueryParams } from '../../types/models/request/transaction/transaction-queryparams.type';
 import { LITERALS } from '../../constants/literals';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CategoryService } from '../../services/category/category.service';
+import { CategoryResponse } from '../../types/models/response/category/category-response.type';
 
 type FormFields = {
   category: string;
@@ -35,7 +37,6 @@ type FormFields = {
 @Component({
   selector: 'app-transaction-form',
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [
     MatFormFieldModule,
     MatIconModule,
@@ -53,17 +54,16 @@ type FormFields = {
 export class TransactionFormComponent implements OnInit, OnChanges {
   @Input() transaction?: TransactionResponse;
   @Input() operationType?: string;
+  transactionService = inject(TransactionService);
+  categoryService = inject(CategoryService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
   literals = LITERALS;
   isLoading: boolean = false;
   transactionTypeIndex?: number;
   transactionTypes: string[] = ['EXPENSE', 'REVENUE'];
   readonly dialog = inject(MatDialog);
-
-  constructor(
-    private transactionService: TransactionService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  categories: CategoryResponse[] = [];
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params: ParamMap) => {
@@ -73,6 +73,14 @@ export class TransactionFormComponent implements OnInit, OnChanges {
           params.get('type')!
         );
       }
+      this.categoryService.getCategories().subscribe({
+        next: (res) => {
+          this.categories = res.results;
+        },
+        error: (err) => {
+          console.log('Error getting categories', err);
+        },
+      });
     });
   }
 
@@ -122,14 +130,6 @@ export class TransactionFormComponent implements OnInit, OnChanges {
     });
   }
 
-  categories: string[] = [
-    this.literals.categories.food.toUpperCase(),
-    this.literals.categories.home.toUpperCase(),
-    this.literals.categories.finances.toUpperCase(),
-    this.literals.categories.work.toUpperCase(),
-    this.literals.categories.entertainment.toUpperCase(),
-  ];
-
   formGroup = new FormGroup({
     category: new FormControl<string>(''),
     amount: new FormControl<number>(0),
@@ -143,7 +143,7 @@ export class TransactionFormComponent implements OnInit, OnChanges {
 
   private setFormValues(transaction: TransactionResponse) {
     this.formGroup.patchValue({
-      category: transaction.category,
+      category: transaction.category.name,
       amount: transaction.amount,
       description: transaction.description,
     });
@@ -200,8 +200,17 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   private mapToTransactionRequest(formValues: FormFields): TransactionRequest {
     return {
       ...formValues,
+      category: {
+        name: formValues.category,
+        color: this.getRandomHexColor(),
+      },
       date: new Date(),
     };
+  }
+
+  getRandomHexColor(): string {
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    return '#' + randomColor.padStart(6, '0');
   }
 
   formValuesChanged(): boolean {
@@ -214,12 +223,14 @@ export class TransactionFormComponent implements OnInit, OnChanges {
   }
 
   protected filterCategories(): string[] {
-    console.log(this.categories);
-    return this.categories.filter((category) =>
-      category
-        .toLowerCase()
-        .includes(this.formGroup.controls['category'].value!.toLowerCase())
-    );
+    if (this.categories.length === 0) return [];
+    return this.categories
+      .filter((category) =>
+        category.name
+          .toLowerCase()
+          .includes(this.formGroup.controls['category'].value!.toLowerCase())
+      )
+      .map((category) => category.name);
   }
 
   protected isValidForm(): boolean {

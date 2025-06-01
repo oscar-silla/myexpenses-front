@@ -5,16 +5,15 @@ import { CommonModule } from '@angular/common';
 import { VerificationFormComponent } from '../../components/verification-form/verification-form.component';
 
 @Component({
-  selector: 'app-registration',
-  standalone: true,
-  imports: [
-    RegistrationFormComponent,
-    LoginFormComponent,
-    VerificationFormComponent,
-    CommonModule,
-  ],
-  templateUrl: './registration.component.html',
-  styleUrl: './registration.component.css',
+    selector: 'app-registration',
+    imports: [
+        RegistrationFormComponent,
+        LoginFormComponent,
+        VerificationFormComponent,
+        CommonModule,
+    ],
+    templateUrl: './registration.component.html',
+    styleUrl: './registration.component.css'
 })
 export class RegistrationComponent {
   protected isLoginMode: boolean = true;

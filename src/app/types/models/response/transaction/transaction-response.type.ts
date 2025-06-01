@@ -1,7 +1,9 @@
+import { CategoryResponse } from '../category/category-response.type';
+
 export type TransactionResponse = {
   id: number;
   date: Date;
   amount: number;
-  category: string;
+  category: CategoryResponse;
   description: string;
 };

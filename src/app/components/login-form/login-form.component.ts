@@ -23,20 +23,19 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-login-form',
-  encapsulation: ViewEncapsulation.None,
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatButton,
-    MatIconButton,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './login-form.component.html',
-  styleUrl: './login-form.component.css',
+    selector: 'app-login-form',
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatButton,
+        MatIconButton,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './login-form.component.html',
+    styleUrl: './login-form.component.css'
 })
 export class LoginFormComponent {
   @Output() protected switchToRegister = new EventEmitter<void>();

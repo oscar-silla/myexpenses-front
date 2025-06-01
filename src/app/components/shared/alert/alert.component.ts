@@ -8,11 +8,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-alert',
-  standalone: true,
-  imports: [MatSnackBarModule, MatFormFieldModule, MatInputModule],
-  templateUrl: './alert.component.html',
-  styleUrl: './alert.component.css',
+    selector: 'app-alert',
+    imports: [MatSnackBarModule, MatFormFieldModule, MatInputModule],
+    templateUrl: './alert.component.html',
+    styleUrl: './alert.component.css'
 })
 export class AlertComponent {
   constructor(

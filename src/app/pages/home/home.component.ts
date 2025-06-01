@@ -13,19 +13,18 @@ import { LITERALS } from '../../constants/literals';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  encapsulation: ViewEncapsulation.None,
-  imports: [
-    TransactionsListComponent,
-    TransactionSummaryComponent,
-    PieChartComponent,
-    FabButtonComponent,
-    MatTabsModule,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+    selector: 'app-home',
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        TransactionsListComponent,
+        TransactionSummaryComponent,
+        PieChartComponent,
+        FabButtonComponent,
+        MatTabsModule,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
   literals = LITERALS;
