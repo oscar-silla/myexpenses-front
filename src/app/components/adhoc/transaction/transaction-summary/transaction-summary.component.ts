@@ -4,11 +4,10 @@ import { TransactionSummary } from '../../../../types/models/response/Transactio
 import { LITERALS } from '../../../../constants/literals';
 
 @Component({
-  selector: 'app-transaction-summary',
-  standalone: true,
-  imports: [MatCardModule],
-  templateUrl: './transaction-summary.component.html',
-  styleUrl: './transaction-summary.component.css',
+    selector: 'app-transaction-summary',
+    imports: [MatCardModule],
+    templateUrl: './transaction-summary.component.html',
+    styleUrl: './transaction-summary.component.css'
 })
 export class TransactionSummaryComponent implements OnInit {
   @Input() transactionSummary!: TransactionSummary;

@@ -12,18 +12,17 @@ import {
 import { LITERALS } from '../../../constants/literals';
 
 @Component({
-  selector: 'app-dialog',
-  standalone: true,
-  imports: [
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    MatButtonModule,
-  ],
-  templateUrl: './dialog.component.html',
-  styleUrl: './dialog.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-dialog',
+    imports: [
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatButtonModule,
+    ],
+    templateUrl: './dialog.component.html',
+    styleUrl: './dialog.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DialogComponent {
   literals = LITERALS;

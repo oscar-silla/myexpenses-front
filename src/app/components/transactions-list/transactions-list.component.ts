@@ -7,17 +7,16 @@ import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-transactions-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatListModule,
-    MatDividerModule,
-    RouterLink,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './transactions-list.component.html',
-  styleUrl: './transactions-list.component.css',
+    selector: 'app-transactions-list',
+    imports: [
+        CommonModule,
+        MatListModule,
+        MatDividerModule,
+        RouterLink,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './transactions-list.component.html',
+    styleUrl: './transactions-list.component.css'
 })
 export class TransactionsListComponent {
   @Input() type: string = 'EXPENSE';

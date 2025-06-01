@@ -29,22 +29,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from '../shared/alert/alert.component';
 
 @Component({
-  selector: 'app-registration-form',
-  encapsulation: ViewEncapsulation.None,
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatButtonModule,
-    MatChipsModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatTabsModule,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './registration-form.component.html',
-  styleUrl: './registration-form.component.css',
+    selector: 'app-registration-form',
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatButtonModule,
+        MatChipsModule,
+        CommonModule,
+        ReactiveFormsModule,
+        MatTabsModule,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './registration-form.component.html',
+    styleUrl: './registration-form.component.css'
 })
 export class RegistrationFormComponent {
   @Output() switchToLogin = new EventEmitter<void>();

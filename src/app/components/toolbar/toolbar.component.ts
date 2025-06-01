@@ -13,20 +13,19 @@ import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
-  selector: 'app-toolbar',
-  standalone: true,
-  imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatNavList,
-    MatListItem,
-    CapitalizePipe,
-    RouterOutlet,
-  ],
-  templateUrl: './toolbar.component.html',
-  styleUrl: './toolbar.component.css',
+    selector: 'app-toolbar',
+    imports: [
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatNavList,
+        MatListItem,
+        CapitalizePipe,
+        RouterOutlet,
+    ],
+    templateUrl: './toolbar.component.html',
+    styleUrl: './toolbar.component.css'
 })
 export class ToolbarComponent implements OnInit {
   literals = LITERALS;
