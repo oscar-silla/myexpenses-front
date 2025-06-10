@@ -6,32 +6,32 @@ import { FabButtonComponent } from '../../components/fab-button/fab-button.compo
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TransactionService } from '../../services/transaction/transaction.service';
-import { TransactionDateResponse } from '../../types/models/response/transaction-date/transaction-date-response.type';
-import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
 import { TransactionSummary } from '../../types/models/response/TransactionSummary.type';
 import { LITERALS } from '../../constants/literals';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TransactionsResponse } from '../../types/models/response/transaction-date/transactions-response.type';
+import { TransactionResponse } from '../../types/models/response/transaction/transaction-response.type';
 
 @Component({
-    selector: 'app-home',
-    encapsulation: ViewEncapsulation.None,
-    imports: [
-        TransactionsListComponent,
-        TransactionSummaryComponent,
-        PieChartComponent,
-        FabButtonComponent,
-        MatTabsModule,
-        MatProgressSpinnerModule,
-    ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.css'
+  selector: 'app-home',
+  encapsulation: ViewEncapsulation.None,
+  imports: [
+    TransactionsListComponent,
+    TransactionSummaryComponent,
+    PieChartComponent,
+    FabButtonComponent,
+    MatTabsModule,
+    MatProgressSpinnerModule,
+  ],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
   literals = LITERALS;
   transactionType: string = 'EXPENSE';
   transactionTypes: string[] = ['EXPENSE', 'REVENUE'];
   transactionTypeIndex?: number;
-  transactionDates: TransactionDate[] = [];
+  transactions: TransactionResponse[] = [];
   isLoading: boolean = false;
   transactionSummary: TransactionSummary = {
     totalExpense: 0,
@@ -56,8 +56,8 @@ export class HomeComponent implements OnInit {
     });
 
     this.transactionService.getTransactions().subscribe({
-      next: (response: TransactionDateResponse) => {
-        this.transactionDates = response.results;
+      next: (response: TransactionsResponse) => {
+        this.transactions = response.results;
         this.transactionSummary = { ...response.summary, isLoaded: true };
         this.isLoading = false;
       },

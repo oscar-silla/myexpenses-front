@@ -1,62 +1,40 @@
-<div>
-  <mat-list class="transaction-list" role="list">
-    @for (transactionDate of getTransactionDate(); track transactionDate.date) {
-    <div [ngClass]="{'transaction-date': !$last,'last-transaction': $last}">
-      @if ((type === 'EXPENSE' && transactionDate.expenses.length > 0)
-      || (type === 'REVENUE' && transactionDate.revenues.length > 0))
-      {
-        <mat-list-item class="date-item">
-          <div class="flex">
-            <span class="date-item-span">
-              {{ transactionDate.date }}
-            </span>
-            <span class="date-item-span">
-              {{ getTransactionDateAmountByDate(transactionDate.date) }}€
-            </span>
-          </div>
-        </mat-list-item>
-      } @else {
-        <div class="empty-message">
-          <mat-list-item>No hay elementos.</mat-list-item>
+<mat-list class="transaction-list" role="list">
+  @for (date of getTransactionDates(); track $index) {
+    <div [ngClass]="{'transaction-date': !$last, 'last-transaction': $last}">
+      <!-- Encabezado de fecha -->
+      <mat-list-item class="date-item">
+        <div class="flex">
+          <span class="date-item-span">
+            {{ date }}
+          </span>
+          <span class="date-item-span">
+            {{ getTransactionDateAmountByDate(date) | number:'1.2-2'}}€
+          </span>
         </div>
-      } @if (type === 'EXPENSE') {
-        @for (expense of transactionDate.expenses; track expense.id;) {
-          <div class="transaction-item">
-            <mat-list-item 
-              role="listitem" 
-              class="transaction-list-item" 
-              [routerLink]="['/transacciones', expense.id]" 
-              [queryParams]="{type: type}"
-            >
-              <div class="flex transaction-details">
-                <span class="transaction-description">{{ expense.description }}</span>
-                <span class="transaction-amount">{{ expense.amount }}€</span>
-              </div>
-            </mat-list-item>
-          </div>
-        }
-      } @else {
-        @for (expense of transactionDate.revenues; track expense.id) {
-          <div class="transaction-item">
-            <mat-list-item 
-              role="listitem" 
-              class="transaction-list-item" 
-              [routerLink]="['/transacciones', expense.id]" 
-              [queryParams]="{type: type}"
-            >
-              <div class="flex transaction-details">
-                <span class="transaction-description">{{ expense.description }}</span>
-                <span class="transaction-amount">{{ expense.amount }}€</span>
-              </div>
-            </mat-list-item>
-          </div>
-        }
+      </mat-list-item>
+
+      <!-- Lista de transacciones -->
+      @for (transaction of getTransactionsByDateAndType(date); track transaction.id) {
+        <div class="transaction-item">
+          <mat-list-item 
+            role="listitem" 
+            class="transaction-list-item" 
+            [routerLink]="['/transacciones', transaction.id]" 
+            [queryParams]="{type: type}"
+          >
+            <div class="flex transaction-details">
+              <span class="transaction-description">{{ transaction.description || 'Sin descripción' }}</span>
+              <span class="transaction-amount" [class.expense]="type === 'EXPENSE'" [class.revenue]="type === 'REVENUE'">
+                {{ transaction.amount | number:'1.2-2' }}€
+              </span>
+            </div>
+          </mat-list-item>
+        </div>
       }
     </div>
-    } @empty {
-    <div class="empty-message">
-      <mat-list-item>No hay elementos.</mat-list-item>
+  } @empty {
+    <div class="no-transactions">
+      No hay transacciones para mostrar
     </div>
-    }
-  </mat-list>
-</div>
+  }
+</mat-list>

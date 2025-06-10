@@ -14,8 +14,8 @@ import {
   LegendComponent,
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
-import { TransactionDate } from '../../types/models/response/transaction-date/transaction-date.type';
 import { LITERALS } from '../../constants/literals';
+import { TransactionResponse } from '../../types/models/response/transaction/transaction-response.type';
 
 use([
   PieChart,
@@ -35,7 +35,7 @@ type CategoryType = { value: number; name: string; color: string };
   styleUrl: './pie-chart.component.css',
 })
 export class PieChartComponent implements OnChanges {
-  @Input() transactionDates: TransactionDate[] = [];
+  @Input() transactions: TransactionResponse[] = [];
   @Input() type: string = 'EXPENSE';
   @ViewChild('chartContainer', { static: false }) chartContainer!: ElementRef;
   literals = LITERALS;
@@ -43,9 +43,10 @@ export class PieChartComponent implements OnChanges {
   private chart: any | null = null;
 
   private collectCategoriesByTransactionType(type: string): CategoryType[] {
-    return this.transactionDates
-      .flatMap((date) => (type === 'EXPENSE' ? date.expenses : date.revenues))
-      .filter((transaction) => transaction.amount > 0)
+    return this.transactions
+      .filter(
+        (transaction) => transaction.type === type && transaction.amount > 0
+      )
       .reduce((acc: CategoryType[], transaction) => {
         const existingCategory = acc.find(
           (cat) => cat.name === transaction.category.name
@@ -66,8 +67,8 @@ export class PieChartComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
-      (changes['transactionDates'] &&
-        changes['transactionDates'].currentValue?.length > 0) ||
+      (changes['transactions'] &&
+        changes['transactions'].currentValue?.length > 0) ||
       (changes['type'] && changes['type'].currentValue)
     ) {
       this.categories = this.collectCategoriesByTransactionType(this.type);

@@ -12,7 +12,10 @@
             <mat-spinner></mat-spinner>
           </div>
         } @else {
-          <app-transactions-list [type]="transactionType" [transactionDates]="transactionDates"></app-transactions-list>
+          <app-transactions-list 
+            [type]="transactionType" 
+            [transactions]="transactions"
+          ></app-transactions-list>
         }
       </mat-tab>
       <mat-tab class="mat-tab" label={{literals.revenues}}>
@@ -21,7 +24,10 @@
             <mat-spinner></mat-spinner>
           </div>
         } @else {
-          <app-transactions-list [type]="transactionType" [transactionDates]="transactionDates"></app-transactions-list>
+          <app-transactions-list 
+            [type]="transactionType" 
+            [transactions]="transactions"
+          ></app-transactions-list>
         }  
       </mat-tab>
     </mat-tab-group>
@@ -29,7 +35,7 @@
   @if (transactionSummary.isLoaded) {
     <app-transaction-summary [transactionSummary]="transactionSummary"></app-transaction-summary>
   }
-  <app-pie-chart [transactionDates]="transactionDates" [type]="transactionType"></app-pie-chart>
+  <app-pie-chart [transactions]="transactions" [type]="transactionType"></app-pie-chart>
   <div class="flex">
     <app-fab-button [type]="transactionType"></app-fab-button>
   </div>
